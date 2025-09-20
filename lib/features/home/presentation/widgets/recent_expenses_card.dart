@@ -1,3 +1,4 @@
+import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../expense_tracking/domain/entities/expense.dart';
@@ -109,7 +110,7 @@ class RecentExpensesCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          DateFormatter.formatShortDate(expense.date),
+                          DateFormatter.formatShortDate(expense.date, context.l10n.localeName),
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 12,

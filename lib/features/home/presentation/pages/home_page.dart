@@ -1,3 +1,5 @@
+import 'package:expense_tracker/core/utils/localization_helper.dart';
+import 'package:expense_tracker/core/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -38,12 +40,12 @@ class _HomePageState extends State<HomePage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Xin chào!',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+            Text(
+              context.l10n.hello,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
             ),
             Text(
-              DateFormatter.formatFullDate(now),
+              DateFormatter.formatFullDate(now, context.l10n.localeName),
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
             ),
           ],
@@ -55,6 +57,7 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(FontAwesomeIcons.bell),
             onPressed: () {
               // TODO: Implement notifications
+              logger.i(context.l10n.localeName);
             },
           ),
         ],

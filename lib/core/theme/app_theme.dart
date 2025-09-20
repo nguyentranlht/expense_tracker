@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // Define bright and vibrant color scheme
-  static const Color primaryColor = Color(0xFF2196F3); // Bright Blue
+  static const Color primaryColor = Color(0xFF42A6EC); // Bright Blue
   static const Color primaryContainer = Color(0xFFE3F2FD);
   static const Color secondary = Color(0xFF4CAF50); // Fresh Green
   static const Color secondaryContainer = Color(0xFFE8F5E8);
@@ -138,7 +138,7 @@ class AppTheme {
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       shape: CircleBorder(),
       elevation: 3,
-      backgroundColor: secondary, // Use green for FAB
+      backgroundColor: primaryColor, // Use primary color for FAB
       foregroundColor: Colors.white,
     ),
     

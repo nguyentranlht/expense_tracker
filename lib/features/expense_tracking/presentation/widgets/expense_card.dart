@@ -1,3 +1,4 @@
+import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../core/constants/constants.dart';
@@ -107,7 +108,7 @@ class ExpenseCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          DateFormatter.formatDate(expense.date),
+                          DateFormatter.formatDate(expense.date, context.l10n.localeName),
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -147,7 +148,7 @@ class ExpenseCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          DateFormatter.formatTime(expense.createdAt),
+                          DateFormatter.formatTime(expense.createdAt, context.l10n.localeName),
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
