@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../../widgets/language_switcher.dart';
+import '../../../../core/utils/localization_helper.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -8,9 +10,12 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cài đặt'),
+        title: Text(context.l10n.appTitle),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         elevation: 0,
+        actions: const [
+          LanguageSwitcher(),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),

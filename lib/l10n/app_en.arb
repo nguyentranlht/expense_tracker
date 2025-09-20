@@ -1,0 +1,79 @@
+{
+  "@@locale": "en",
+  "appTitle": "Expense Tracker",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "hello": "Hello",
+  "@hello": {
+    "description": "A greeting message"
+  },
+  "expenses": "Expenses",
+  "@expenses": {
+    "description": "Expenses label"
+  },
+  "addExpense": "Add Expense",
+  "@addExpense": {
+    "description": "Add expense button text"
+  },
+  "amount": "Amount",
+  "@amount": {
+    "description": "Amount label"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Description label"
+  },
+  "category": "Category",
+  "@category": {
+    "description": "Category label"
+  },
+  "date": "Date",
+  "@date": {
+    "description": "Date label"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  "totalExpenses": "Total Expenses",
+  "@totalExpenses": {
+    "description": "Total expenses label"
+  },
+  "noExpenses": "No expenses found",
+  "@noExpenses": {
+    "description": "Message when no expenses are found"
+  },
+  "currencySymbol": "$",
+  "@currencySymbol": {
+    "description": "Currency symbol"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings page title"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting label"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme setting label"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications setting label"
+  }
+}

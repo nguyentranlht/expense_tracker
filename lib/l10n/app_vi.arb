@@ -1,0 +1,22 @@
+{
+  "@@locale": "vi",
+  "appTitle": "Quản Lý Chi Tiêu",
+  "hello": "Xin chào",
+  "expenses": "Chi Tiêu",
+  "addExpense": "Thêm Chi Tiêu",
+  "amount": "Số Tiền",
+  "description": "Mô Tả",
+  "category": "Danh Mục",
+  "date": "Ngày",
+  "save": "Lưu",
+  "cancel": "Hủy",
+  "delete": "Xóa",
+  "edit": "Sửa",
+  "totalExpenses": "Tổng Chi Tiêu",
+  "noExpenses": "Không có chi tiêu nào",
+  "currencySymbol": "₫",
+  "settings": "Cài đặt",
+  "language": "Ngôn ngữ",
+  "theme": "Giao diện",
+  "notifications": "Thông báo"
+}
