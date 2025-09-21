@@ -1,3 +1,4 @@
+import 'package:expense_tracker/core/utils/logger.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -9,7 +10,7 @@ class LocationService {
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      print('Location services are disabled.');
+      logger.i('Location services are disabled.');
       return null;
     }
 
@@ -17,13 +18,13 @@ class LocationService {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        print('Location permissions are denied');
+        logger.i('Location permissions are denied');
         return null;
       }
     }
     
     if (permission == LocationPermission.deniedForever) {
-      print('Location permissions are permanently denied');
+      logger.i('Location permissions are permanently denied');
       return null;
     } 
 
@@ -33,7 +34,7 @@ class LocationService {
         timeLimit: const Duration(seconds: 10),
       );
     } catch (e) {
-      print('Error getting location: $e');
+      logger.e('Error getting location: $e');
       return null;
     }
   }
@@ -61,7 +62,7 @@ class LocationService {
         return place.locality ?? place.administrativeArea ?? 'Unknown Location';
       }
     } catch (e) {
-      print('Error getting city name: $e');
+      logger.e('Error getting city name: $e');
     }
     return 'Unknown Location';
   }

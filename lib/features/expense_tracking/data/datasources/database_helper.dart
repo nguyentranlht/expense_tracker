@@ -93,4 +93,11 @@ class DatabaseHelper {
     final db = await instance.database;
     db.close();
   }
+
+  Future deleteDatabase() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, Constants.databaseName);
+    await databaseFactory.deleteDatabase(path);
+    _database = null;
+  }
 }

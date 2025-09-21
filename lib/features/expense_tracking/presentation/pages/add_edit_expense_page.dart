@@ -4,6 +4,7 @@ import '../../../../core/constants/constants.dart';
 import '../../domain/entities/expense.dart';
 import '../bloc/expense_bloc.dart';
 import '../bloc/expense_event.dart';
+import '../bloc/expense_state.dart';
 
 class AddEditExpensePage extends StatefulWidget {
   final Expense? expense;
@@ -47,143 +48,178 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? 'Sửa Chi tiêu' : 'Thêm Chi tiêu'),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Title field
-                      TextFormField(
-                        controller: _titleController,
-                        decoration: const InputDecoration(
-                          labelText: 'Tiêu đề *',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.title),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Vui lòng nhập tiêu đề';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
+    return BlocListener<ExpenseBloc, ExpenseState>(
+      listener: (context, state) {
+        if (state is ExpenseOperationSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 2),
+            ),
+          );
+          Navigator.of(context).pop();
+        } else if (state is ExpenseError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(isEditing ? 'Sửa Chi tiêu' : 'Thêm Chi tiêu'),
+          backgroundColor: Theme.of(context).primaryColor,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
+        body: BlocBuilder<ExpenseBloc, ExpenseState>(
+          builder: (context, state) {
+            return Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Title field
+                            TextFormField(
+                              controller: _titleController,
+                              decoration: const InputDecoration(
+                                labelText: 'Tiêu đề *',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.title),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Vui lòng nhập tiêu đề';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
 
-                      // Amount field
-                      TextFormField(
-                        controller: _amountController,
-                        decoration: const InputDecoration(
-                          labelText: 'Số tiền *',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.attach_money),
-                          suffixText: 'VNĐ',
-                        ),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Vui lòng nhập số tiền';
-                          }
-                          final amount = double.tryParse(value);
-                          if (amount == null || amount <= 0) {
-                            return 'Số tiền phải lớn hơn 0';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
+                            // Amount field
+                            TextFormField(
+                              controller: _amountController,
+                              decoration: const InputDecoration(
+                                labelText: 'Số tiền *',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.attach_money),
+                                suffixText: 'VNĐ',
+                              ),
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Vui lòng nhập số tiền';
+                                }
+                                final amount = double.tryParse(value);
+                                if (amount == null || amount <= 0) {
+                                  return 'Số tiền phải lớn hơn 0';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
 
-                      // Description field
-                      TextFormField(
-                        controller: _descriptionController,
-                        decoration: const InputDecoration(
-                          labelText: 'Mô tả',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.description),
-                        ),
-                        maxLines: 3,
-                      ),
-                      const SizedBox(height: 16),
+                            // Description field
+                            TextFormField(
+                              controller: _descriptionController,
+                              decoration: const InputDecoration(
+                                labelText: 'Mô tả',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.description),
+                              ),
+                              maxLines: 3,
+                            ),
+                            const SizedBox(height: 16),
 
-                      // Category dropdown
-                      DropdownButtonFormField<String>(
-                        value: _selectedCategory,
-                        decoration: const InputDecoration(
-                          labelText: 'Danh mục *',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.category),
-                        ),
-                        items: Constants.defaultCategories.map((category) {
-                          return DropdownMenuItem<String>(
-                            value: category['name'] as String,
-                            child: Text(category['name'] as String),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedCategory = value!;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 16),
+                            // Category dropdown
+                            DropdownButtonFormField<String>(
+                              value: _selectedCategory,
+                              decoration: const InputDecoration(
+                                labelText: 'Danh mục *',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.category),
+                              ),
+                              items: Constants.defaultCategories.map((category) {
+                                return DropdownMenuItem<String>(
+                                  value: category['name'] as String,
+                                  child: Text(category['name'] as String),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedCategory = value!;
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 16),
 
-                      // Date picker
-                      InkWell(
-                        onTap: _selectDate,
-                        child: InputDecorator(
-                          decoration: const InputDecoration(
-                            labelText: 'Ngày chi tiêu *',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.calendar_today),
+                            // Date picker
+                            InkWell(
+                              onTap: _selectDate,
+                              child: InputDecorator(
+                                decoration: const InputDecoration(
+                                  labelText: 'Ngày chi tiêu *',
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Icon(Icons.calendar_today),
+                                ),
+                                child: Text(
+                                  '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    // Save button
+                    Container(
+                      width: double.infinity,
+                      height: 50,
+                      margin: const EdgeInsets.only(top: 16),
+                      child: ElevatedButton(
+                        onPressed: state is ExpenseLoading ? null : _saveExpense,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Text(
-                            '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
-                            style: const TextStyle(fontSize: 16),
-                          ),
                         ),
+                        child: state is ExpenseLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                ),
+                              )
+                            : Text(
+                                isEditing ? 'Cập nhật' : 'Thêm mới',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-
-              // Save button
-              Container(
-                width: double.infinity,
-                height: 50,
-                margin: const EdgeInsets.only(top: 16),
-                child: ElevatedButton(
-                  onPressed: _saveExpense,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Text(
-                    isEditing ? 'Cập nhật' : 'Thêm mới',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
@@ -221,8 +257,6 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
       } else {
         context.read<ExpenseBloc>().add(AddExpenseEvent(expense));
       }
-
-      Navigator.of(context).pop();
     }
   }
 }

@@ -16,7 +16,7 @@ Future<void> init() async {
   // Features - Expense Tracking
 
   // Bloc
-  sl.registerFactory(
+  sl.registerLazySingleton(
     () => ExpenseBloc(
       getAllExpenses: sl(),
       addExpense: sl(),

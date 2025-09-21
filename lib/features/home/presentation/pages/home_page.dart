@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../expense_tracking/data/datasources/database_helper.dart';
 import '../../../expense_tracking/domain/entities/expense.dart';
 import '../../../expense_tracking/presentation/bloc/expense_bloc.dart';
 import '../../../expense_tracking/presentation/bloc/expense_event.dart';
@@ -24,8 +25,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Load expenses for overview
-    context.read<ExpenseBloc>().add(LoadExpenses());
+    // Ensure data is loaded when page appears
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ExpenseBloc>().add(LoadExpenses());
+    });
   }
 
   @override
@@ -54,6 +57,32 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         actions: [
           IconButton(
+            icon: const Icon(FontAwesomeIcons.database),
+            onPressed: () async {
+              try {
+                logger.i('Resetting database...');
+                final dbHelper = DatabaseHelper.instance;
+                await dbHelper.deleteDatabase();
+                await dbHelper.database; // Recreate database with sample data
+                context.read<ExpenseBloc>().add(LoadExpenses());
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Database reset với sample data thành công!'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              } catch (e) {
+                logger.e('Error resetting database: $e');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Lỗi reset database: $e'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+          ),
+          IconButton(
             icon: const Icon(FontAwesomeIcons.bell),
             onPressed: () {
               // TODO: Implement notifications
@@ -64,13 +93,39 @@ class _HomePageState extends State<HomePage> {
       ),
       body: BlocBuilder<ExpenseBloc, ExpenseState>(
         builder: (context, state) {
+          logger.i('Current ExpenseState: $state');
+          
           if (state is ExpenseLoading) {
             return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is ExpenseError) {
+            logger.e('ExpenseError: ${state.message}');
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text('Lỗi: ${state.message}'),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<ExpenseBloc>().add(LoadExpenses());
+                    },
+                    child: const Text('Thử lại'),
+                  ),
+                ],
+              ),
+            );
           }
 
           List<Expense> expenses = [];
           if (state is ExpenseLoaded) {
             expenses = state.expenses;
+            logger.i('Loaded ${expenses.length} expenses');
+          } else {
+            logger.w('State is not ExpenseLoaded: $state');
           }
 
           // Calculate today's expenses
@@ -182,7 +237,20 @@ class _HomePageState extends State<HomePage> {
 
                   const SizedBox(height: 20),
 
-                  RecentExpensesCard(expenses: expenses.take(5).toList()),
+                  // Recent expenses sorted by date (newest first), limit to 5 items
+                  RecentExpensesCard(
+                    expenses: expenses
+                        .toList()
+                        ..sort((a, b) => b.date.compareTo(a.date))
+                        ..take(5)
+                        .toList(),
+                    onViewAllPressed: () {
+                      // Navigate to expense list - implement later
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Navigate to expenses list')),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

@@ -8,6 +8,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'core/theme/app_theme.dart';
 import 'features/expense_tracking/presentation/bloc/expense_bloc.dart';
+import 'features/expense_tracking/presentation/bloc/expense_event.dart';
 import 'main_navigation.dart';
 import 'injection_container.dart' as di;
 import 'l10n/generated/app_localizations.dart';
@@ -38,11 +39,17 @@ class MyApp extends StatelessWidget {
             splitScreenMode: true,
             builder: (context, child) {
               return BlocProvider(
-                create: (context) => di.sl<ExpenseBloc>(),
+                create: (context) {
+                  logger.i('Creating ExpenseBloc and loading expenses...');
+                  final bloc = di.sl<ExpenseBloc>();
+                  // Auto-load expenses when bloc is created
+                  bloc.add(LoadExpenses());
+                  return bloc;
+                },
                 child: MaterialApp(
                   title: 'Expense Tracker',
                   theme: AppTheme.lightTheme,
-                  darkTheme: AppTheme.darkTheme,
+                  // darkTheme: AppTheme.darkTheme,
                   themeMode: ThemeMode.system,
                   locale: localeProvider.locale,
                   supportedLocales: AppLocalizations.supportedLocales,

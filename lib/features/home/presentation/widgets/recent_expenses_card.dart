@@ -6,10 +6,12 @@ import '../../../../core/utils/formatters.dart';
 
 class RecentExpensesCard extends StatelessWidget {
   final List<Expense> expenses;
+  final VoidCallback? onViewAllPressed;
 
   const RecentExpensesCard({
     super.key,
     required this.expenses,
+    this.onViewAllPressed,
   });
 
   @override
@@ -36,9 +38,7 @@ class RecentExpensesCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 TextButton(
-                  onPressed: () {
-                    // Switch to expenses tab
-                  },
+                  onPressed: onViewAllPressed,
                   child: Text(context.l10n.viewAll),
                 ),
               ],
