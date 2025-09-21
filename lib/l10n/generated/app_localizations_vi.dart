@@ -64,4 +64,22 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get notifications => 'Thông báo';
+
+  @override
+  String get recent_expenses_card => 'Chi tiêu gần đây';
+
+  @override
+  String get error => 'Đã có lỗi xảy ra!';
+
+  @override
+  String get balance => 'Số dư';
+
+  @override
+  String get transactions => 'Giao dịch';
+
+  @override
+  String get avg_month => 'TB/tháng';
+
+  @override
+  String get today => 'Hôm nay';
 }

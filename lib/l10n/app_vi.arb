@@ -18,5 +18,11 @@
   "settings": "Cài đặt",
   "language": "Ngôn ngữ",
   "theme": "Giao diện",
-  "notifications": "Thông báo"
+  "notifications": "Thông báo",
+  "recent_expenses_card": "Chi tiêu gần đây",
+  "error": "Đã có lỗi xảy ra!",
+  "balance": "Số dư",
+  "transactions": "Giao dịch",
+  "avg_month": "TB/tháng",
+  "today": "Hôm nay"
 }

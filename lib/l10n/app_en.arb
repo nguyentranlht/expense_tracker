@@ -75,5 +75,11 @@
   "notifications": "Notifications",
   "@notifications": {
     "description": "Notifications setting label"
-  }
+  },
+  "recent_expenses_card": "Recent Expenses",
+  "error": "An error occurred!",
+  "balance": "Balance",
+  "transactions": "Transactions",
+  "avg_month": "Avg/month",
+  "today": "Today"
 }

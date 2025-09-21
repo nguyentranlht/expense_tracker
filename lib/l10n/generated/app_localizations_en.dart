@@ -64,4 +64,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifications => 'Notifications';
+
+  @override
+  String get recent_expenses_card => 'Recent Expenses';
+
+  @override
+  String get error => 'An error occurred!';
+
+  @override
+  String get balance => 'Balance';
+
+  @override
+  String get transactions => 'Transactions';
+
+  @override
+  String get avg_month => 'Avg/month';
+
+  @override
+  String get today => 'Today';
 }

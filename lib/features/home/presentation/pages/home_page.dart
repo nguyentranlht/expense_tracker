@@ -106,6 +106,7 @@ class _HomePageState extends State<HomePage> {
                     todayExpenses: todayTotal,
                     monthExpenses: monthTotal,
                     transactionCount: expenses.length,
+                    balance: 0.0, // TODO: Implement balance calculation
                   ),
                   
                   const SizedBox(height: 20),
