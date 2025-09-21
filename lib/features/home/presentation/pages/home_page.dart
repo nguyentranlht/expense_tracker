@@ -2,6 +2,7 @@ import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:expense_tracker/core/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../expense_tracking/domain/entities/expense.dart';
 import '../../../expense_tracking/presentation/bloc/expense_bloc.dart';
@@ -42,11 +43,11 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text(
               context.l10n.hello,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.normal),
             ),
             Text(
               DateFormatter.formatFullDate(now, context.l10n.localeName),
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
             ),
           ],
         ),
@@ -76,19 +77,30 @@ class _HomePageState extends State<HomePage> {
           // Calculate today's expenses
           final todayExpenses = expenses.where((expense) {
             return expense.date.year == today.year &&
-                   expense.date.month == today.month &&
-                   expense.date.day == today.day;
+                expense.date.month == today.month &&
+                expense.date.day == today.day;
           }).toList();
 
           // Calculate this month's expenses
           final monthExpenses = expenses.where((expense) {
-            return expense.date.isAfter(startOfMonth.subtract(const Duration(days: 1))) &&
-                   expense.date.isBefore(endOfMonth.add(const Duration(days: 1)));
+            return expense.date.isAfter(
+                  startOfMonth.subtract(const Duration(days: 1)),
+                ) &&
+                expense.date.isBefore(endOfMonth.add(const Duration(days: 1)));
           }).toList();
 
-          final todayTotal = todayExpenses.fold<double>(0.0, (sum, expense) => sum + expense.amount);
-          final monthTotal = monthExpenses.fold<double>(0.0, (sum, expense) => sum + expense.amount);
-          final totalExpenses = expenses.fold<double>(0.0, (sum, expense) => sum + expense.amount);
+          final todayTotal = todayExpenses.fold<double>(
+            0.0,
+            (sum, expense) => sum + expense.amount,
+          );
+          final monthTotal = monthExpenses.fold<double>(
+            0.0,
+            (sum, expense) => sum + expense.amount,
+          );
+          final totalExpenses = expenses.fold<double>(
+            0.0,
+            (sum, expense) => sum + expense.amount,
+          );
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -108,47 +120,21 @@ class _HomePageState extends State<HomePage> {
                     transactionCount: expenses.length,
                     balance: 0.0, // TODO: Implement balance calculation
                   ),
-                  
-                  const SizedBox(height: 20),
-
-                  // Quick Stats
-                  Row(
-                    children: [
-                      Expanded(
-                        child: QuickStatsCard(
-                          title: 'Hôm nay',
-                          amount: todayTotal,
-                          icon: FontAwesomeIcons.calendar,
-                          color: Colors.blue,
-                          count: todayExpenses.length,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: QuickStatsCard(
-                          title: 'Tháng này',
-                          amount: monthTotal,
-                          icon: FontAwesomeIcons.calendarDays,
-                          color: Colors.green,
-                          count: monthExpenses.length,
-                        ),
-                      ),
-                    ],
-                  ),
 
                   const SizedBox(height: 20),
 
                   // Quick Actions
                   Card(
+                    elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Thao tác nhanh',
+                          Text(
+                            context.l10n.quickActions,
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -159,12 +145,13 @@ class _HomePageState extends State<HomePage> {
                               _buildQuickAction(
                                 context,
                                 icon: FontAwesomeIcons.plus,
-                                label: 'Thêm chi tiêu',
+                                label: context.l10n.addExpense,
                                 color: Colors.red,
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => const AddEditExpensePage(),
+                                      builder: (context) =>
+                                          const AddEditExpensePage(),
                                     ),
                                   );
                                 },
@@ -172,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                               _buildQuickAction(
                                 context,
                                 icon: FontAwesomeIcons.chartPie,
-                                label: 'Xem thống kê',
+                                label: context.l10n.viewStatistics,
                                 color: Colors.purple,
                                 onTap: () {
                                   // TODO: Navigate to statistics
@@ -181,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                               _buildQuickAction(
                                 context,
                                 icon: FontAwesomeIcons.listUl,
-                                label: 'Danh sách',
+                                label: context.l10n.list,
                                 color: Colors.orange,
                                 onTap: () {
                                   // TODO: Navigate to expenses list
@@ -196,11 +183,7 @@ class _HomePageState extends State<HomePage> {
 
                   const SizedBox(height: 20),
 
-                  // Recent Expenses
-                  if (expenses.isNotEmpty)
-                    RecentExpensesCard(
-                      expenses: expenses.take(5).toList(),
-                    ),
+                  RecentExpensesCard(expenses: expenses.take(5).toList()),
                 ],
               ),
             ),
@@ -230,19 +213,12 @@ class _HomePageState extends State<HomePage> {
                 color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: FaIcon(
-                icon,
-                color: color,
-                size: 24,
-              ),
+              child: FaIcon(icon, color: color, size: 20.sp),
             ),
             const SizedBox(height: 8),
             Text(
               label,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
+              style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,
             ),
           ],

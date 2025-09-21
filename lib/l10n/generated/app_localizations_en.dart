@@ -82,4 +82,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get today => 'Today';
+
+  @override
+  String get quickActions => 'Quick Actions';
+
+  @override
+  String get viewStatistics => 'View Statistics';
+
+  @override
+  String get list => 'List';
+
+  @override
+  String get expenseReport => 'Expense Report';
+
+  @override
+  String get viewAll => 'View All';
 }

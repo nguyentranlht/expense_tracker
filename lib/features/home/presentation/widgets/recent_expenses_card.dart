@@ -27,8 +27,8 @@ class RecentExpensesCard extends StatelessWidget {
                   size: 20,
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'Chi tiêu gần đây',
+                 Text(
+                  context.l10n.recent_expenses_card,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -39,7 +39,7 @@ class RecentExpensesCard extends StatelessWidget {
                   onPressed: () {
                     // Switch to expenses tab
                   },
-                  child: const Text('Xem tất cả'),
+                  child: Text(context.l10n.viewAll),
                 ),
               ],
             ),

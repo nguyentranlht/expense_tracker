@@ -174,7 +174,7 @@ class _OverviewCardState extends State<OverviewCard> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      context.l10n.recent_expenses_card,
+                      context.l10n.expenseReport,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.sp,

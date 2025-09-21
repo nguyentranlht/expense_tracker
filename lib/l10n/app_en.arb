@@ -81,5 +81,11 @@
   "balance": "Balance",
   "transactions": "Transactions",
   "avg_month": "Avg/month",
-  "today": "Today"
+  "today": "Today",
+  "quickActions": "Quick Actions",
+  "addExpense": "Add Expense",
+  "viewStatistics": "View Statistics",
+  "list": "List",
+  "expenseReport": "Expense Report",
+  "viewAll": "View All"
 }

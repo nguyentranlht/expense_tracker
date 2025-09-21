@@ -24,5 +24,11 @@
   "balance": "Số dư",
   "transactions": "Giao dịch",
   "avg_month": "TB/tháng",
-  "today": "Hôm nay"
+  "today": "Hôm nay",
+  "quickActions": "Thao tác nhanh",
+  "addExpense": "Thêm chi tiêu",
+  "viewStatistics": "Xem thống kê",
+  "list": "Danh sách",
+  "expenseReport": "Báo cáo chi tiêu",
+  "viewAll": "Xem tất cả"
 }

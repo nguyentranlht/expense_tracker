@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   // Define bright and vibrant color scheme
   static const Color primaryColor = Color(0xFF42A6EC); // Bright Blue
-  static const Color primaryContainer = Color(0xFFE3F2FD);
+  static const Color primaryContainer = Color.fromARGB(255, 205, 232, 252);
   static const Color secondary = Color(0xFF4CAF50); // Fresh Green
   static const Color secondaryContainer = Color(0xFFE8F5E8);
   static const Color tertiary = Color(0xFFFF9800); // Vibrant Orange
@@ -57,7 +57,7 @@ class AppTheme {
       inversePrimary: inversePrimary,
       surfaceTint: surfaceTint,
     ),
-    
+
     // AppBar theme
     appBarTheme: const AppBarTheme(
       elevation: 0,
@@ -66,7 +66,7 @@ class AppTheme {
       foregroundColor: Color(0xFF212121),
       surfaceTintColor: surfaceTint,
     ),
-    
+
     // Card theme
     cardTheme: const CardThemeData(
       elevation: 1,
@@ -75,38 +75,32 @@ class AppTheme {
       ),
       clipBehavior: Clip.antiAlias,
     ),
-    
+
     // Elevated button theme
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         elevation: 1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
     ),
-    
+
     // Text button theme
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
     ),
-    
+
     // Filled button theme
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
     ),
-    
+
     // Input decoration theme
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -133,7 +127,7 @@ class AppTheme {
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
     ),
-    
+
     // FAB theme
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       shape: CircleBorder(),
@@ -141,23 +135,32 @@ class AppTheme {
       backgroundColor: primaryColor, // Use primary color for FAB
       foregroundColor: Colors.white,
     ),
-    
+
     // Navigation bar theme
     navigationBarTheme: NavigationBarThemeData(
       elevation: 3,
       backgroundColor: surface,
       surfaceTintColor: surfaceTint,
       indicatorColor: primaryContainer,
+      iconTheme: MaterialStateProperty.resolveWith<IconThemeData>((states) {
+        if (states.contains(MaterialState.selected)) {
+          return IconThemeData(
+            size: 24,
+            color: Color.lerp(primaryColor, const Color(0xFF0D47A1), 0.5),
+          );
+        }
+        return IconThemeData(size: 24, color: primaryColor);
+      }),
       labelTextStyle: MaterialStateProperty.all(
         const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
       ),
     ),
-    
+
     // List tile theme
     listTileTheme: const ListTileThemeData(
       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
     ),
-    
+
     // Dialog theme
     dialogTheme: const DialogThemeData(
       shape: RoundedRectangleBorder(
@@ -165,7 +168,7 @@ class AppTheme {
       ),
       elevation: 6,
     ),
-    
+
     // Bottom sheet theme
     bottomSheetTheme: const BottomSheetThemeData(
       shape: RoundedRectangleBorder(
@@ -211,7 +214,7 @@ class AppTheme {
       inversePrimary: Color(0xFF2196F3),
       surfaceTint: Color(0xFF64B5F6),
     ),
-    
+
     // Apply same theme configurations for dark mode
     appBarTheme: const AppBarTheme(
       elevation: 0,
@@ -220,7 +223,7 @@ class AppTheme {
       foregroundColor: Color(0xFFE0E0E0),
       surfaceTintColor: Color(0xFF64B5F6),
     ),
-    
+
     cardTheme: const CardThemeData(
       elevation: 1,
       shape: RoundedRectangleBorder(
@@ -228,35 +231,29 @@ class AppTheme {
       ),
       clipBehavior: Clip.antiAlias,
     ),
-    
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         elevation: 1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
     ),
-    
+
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
     ),
-    
+
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
     ),
-    
+
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: const Color(0xFF2A2A2A),
@@ -282,14 +279,14 @@ class AppTheme {
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
     ),
-    
+
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       shape: CircleBorder(),
       elevation: 3,
       backgroundColor: Color(0xFF81C784), // Green FAB for dark theme
       foregroundColor: Color(0xFF2E7D32),
     ),
-    
+
     navigationBarTheme: NavigationBarThemeData(
       elevation: 3,
       backgroundColor: const Color(0xFF1E1E1E),
@@ -299,18 +296,18 @@ class AppTheme {
         const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
       ),
     ),
-    
+
     listTileTheme: const ListTileThemeData(
       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
     ),
-    
+
     dialogTheme: const DialogThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(28)),
       ),
       elevation: 6,
     ),
-    
+
     bottomSheetTheme: const BottomSheetThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),

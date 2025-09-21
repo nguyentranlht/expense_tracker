@@ -18,7 +18,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get expenses => 'Chi Tiêu';
 
   @override
-  String get addExpense => 'Thêm Chi Tiêu';
+  String get addExpense => 'Thêm chi tiêu';
 
   @override
   String get amount => 'Số Tiền';
@@ -82,4 +82,19 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get today => 'Hôm nay';
+
+  @override
+  String get quickActions => 'Thao tác nhanh';
+
+  @override
+  String get viewStatistics => 'Xem thống kê';
+
+  @override
+  String get list => 'Danh sách';
+
+  @override
+  String get expenseReport => 'Báo cáo chi tiêu';
+
+  @override
+  String get viewAll => 'Xem tất cả';
 }
