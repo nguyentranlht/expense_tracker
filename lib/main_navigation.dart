@@ -1,3 +1,4 @@
+import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../features/expense_tracking/presentation/pages/expense_list_page.dart';
@@ -25,10 +26,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
@@ -36,26 +34,26 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           });
         },
         selectedIndex: _currentIndex,
-        destinations: const [
+        destinations: [
           NavigationDestination(
             selectedIcon: Icon(FontAwesomeIcons.house),
             icon: Icon(FontAwesomeIcons.house),
-            label: 'Trang chủ',
+            label: context.l10n.home,
           ),
           NavigationDestination(
             selectedIcon: Icon(FontAwesomeIcons.solidCreditCard),
             icon: Icon(FontAwesomeIcons.creditCard),
-            label: 'Chi tiêu',
+            label: context.l10n.expenses,
           ),
           NavigationDestination(
             selectedIcon: Icon(FontAwesomeIcons.chartPie),
             icon: Icon(FontAwesomeIcons.chartPie),
-            label: 'Thống kê',
+            label: context.l10n.statistics,
           ),
           NavigationDestination(
             selectedIcon: Icon(FontAwesomeIcons.gear),
             icon: Icon(FontAwesomeIcons.gear),
-            label: 'Cài đặt',
+            label: context.l10n.settings,
           ),
         ],
       ),

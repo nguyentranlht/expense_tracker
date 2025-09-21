@@ -87,5 +87,7 @@
   "viewStatistics": "View Statistics",
   "list": "List",
   "expenseReport": "Expense Report",
-  "viewAll": "View All"
+  "viewAll": "View All",
+  "home": "Home",
+  "statistics": "Statistics"
 }

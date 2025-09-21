@@ -97,4 +97,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get viewAll => 'Xem tất cả';
+
+  @override
+  String get home => 'Trang chủ';
+
+  @override
+  String get statistics => 'Thống kê';
 }

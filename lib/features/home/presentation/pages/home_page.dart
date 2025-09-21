@@ -10,7 +10,6 @@ import '../../../expense_tracking/presentation/bloc/expense_event.dart';
 import '../../../expense_tracking/presentation/bloc/expense_state.dart';
 import '../../../expense_tracking/presentation/pages/add_edit_expense_page.dart';
 import '../widgets/overview_card.dart';
-import '../widgets/quick_stats_card.dart';
 import '../widgets/recent_expenses_card.dart';
 import '../../../../core/utils/formatters.dart';
 

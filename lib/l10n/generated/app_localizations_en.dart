@@ -97,4 +97,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get viewAll => 'View All';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get statistics => 'Statistics';
 }

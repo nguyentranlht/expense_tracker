@@ -37,24 +37,27 @@ class MyApp extends StatelessWidget {
             minTextAdapt: true,
             splitScreenMode: true,
             builder: (context, child) {
-              return MaterialApp(
-                title: 'Expense Tracker',
-                theme: AppTheme.lightTheme,
-                darkTheme: AppTheme.darkTheme,
-                themeMode: ThemeMode.system,
-                locale: localeProvider.locale,
-                supportedLocales: AppLocalizations.supportedLocales,
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                home: BlocProvider(
-                  create: (context) => di.sl<ExpenseBloc>(),
-                  child: const MainNavigationPage(),
+              return BlocProvider(
+                create: (context) => di.sl<ExpenseBloc>(),
+                child: MaterialApp(
+                  title: 'Expense Tracker',
+                  theme: AppTheme.lightTheme,
+                  darkTheme: AppTheme.darkTheme,
+                  themeMode: ThemeMode.system,
+                  locale: localeProvider.locale,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  home: BlocProvider(
+                    create: (context) => di.sl<ExpenseBloc>(),
+                    child: const MainNavigationPage(),
+                  ),
+                  debugShowCheckedModeBanner: false,
                 ),
-                debugShowCheckedModeBanner: false,
               );
             },
           );

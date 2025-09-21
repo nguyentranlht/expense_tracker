@@ -19,7 +19,7 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _amountController = TextEditingController();
-  
+
   String _selectedCategory = Constants.defaultCategories.first['name'];
   DateTime _selectedDate = DateTime.now();
 
@@ -82,24 +82,6 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Description field
-                      TextFormField(
-                        controller: _descriptionController,
-                        decoration: const InputDecoration(
-                          labelText: 'Mô tả *',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.description),
-                        ),
-                        maxLines: 3,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Vui lòng nhập mô tả';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-
                       // Amount field
                       TextFormField(
                         controller: _amountController,
@@ -120,6 +102,18 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
                           }
                           return null;
                         },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Description field
+                      TextFormField(
+                        controller: _descriptionController,
+                        decoration: const InputDecoration(
+                          labelText: 'Mô tả',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.description),
+                        ),
+                        maxLines: 3,
                       ),
                       const SizedBox(height: 16),
 
