@@ -56,14 +56,15 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                 backgroundColor: Colors.red,
               ),
             );
-          } else if (state is ExpenseOperationSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.green,
-              ),
-            );
-          }
+          } 
+          // else if (state is ExpenseOperationSuccess) {
+          //   ScaffoldMessenger.of(context).showSnackBar(
+          //     SnackBar(
+          //       content: Text(state.message),
+          //       backgroundColor: Colors.green,
+          //     ),
+          //   );
+          // }
         },
         builder: (context, state) {
           if (state is ExpenseLoading) {

@@ -1,3 +1,4 @@
+import 'package:expense_tracker/core/extensions/context_extensions.dart';
 import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:expense_tracker/core/utils/logger.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import '../../../expense_tracking/presentation/bloc/expense_state.dart';
 import '../../../expense_tracking/presentation/pages/add_edit_expense_page.dart';
 import '../widgets/overview_card.dart';
 import '../widgets/recent_expenses_card.dart';
+import '../widgets/monthly_chart_card.dart';
 import '../../../../core/utils/formatters.dart';
 
 class HomePage extends StatefulWidget {
@@ -53,7 +55,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: context.cs.inversePrimary,
         elevation: 0,
         actions: [
           IconButton(
@@ -76,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Lỗi reset database: $e'),
-                    backgroundColor: Colors.red,
+                    backgroundColor: context.cs.error,
                   ),
                 );
               }
@@ -94,7 +96,7 @@ class _HomePageState extends State<HomePage> {
       body: BlocBuilder<ExpenseBloc, ExpenseState>(
         builder: (context, state) {
           logger.i('Current ExpenseState: $state');
-          
+
           if (state is ExpenseLoading) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -239,18 +241,24 @@ class _HomePageState extends State<HomePage> {
 
                   // Recent expenses sorted by date (newest first), limit to 5 items
                   RecentExpensesCard(
-                    expenses: expenses
-                        .toList()
-                        ..sort((a, b) => b.date.compareTo(a.date))
-                        ..take(5)
-                        .toList(),
+                    expenses:
+                        (expenses.toList()
+                              ..sort((a, b) => b.date.compareTo(a.date)))
+                            .take(5)
+                            .toList(),
                     onViewAllPressed: () {
                       // Navigate to expense list - implement later
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Navigate to expenses list')),
+                        const SnackBar(
+                          content: Text('Navigate to expenses list'),
+                        ),
                       );
                     },
                   ),
+                  const SizedBox(height: 20),
+
+                  // Monthly Chart
+                  MonthlyChartCard(expenses: expenses),
                 ],
               ),
             ),
@@ -280,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                 color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: FaIcon(icon, color: color, size: 20.sp),
+              child: FaIcon(icon, color: color, size: 22.sp),
             ),
             const SizedBox(height: 8),
             Text(

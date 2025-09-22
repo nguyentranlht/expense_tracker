@@ -11,12 +11,19 @@ class CurrencyFormatter {
   static String format(double amount) {
     return _currencyFormat.format(amount);
   }
+
+  static String formatCompact(double amount) {
+    if (amount >= 1000000) {
+      return '${(amount / 1000000).toStringAsFixed(1)}M';
+    } else if (amount >= 1000) {
+      return '${(amount / 1000).toStringAsFixed(0)}K';
+    } else {
+      return amount.toStringAsFixed(0);
+    }
+  }
 }
 
 class DateFormatter {
-  static final DateFormat _dateTimeFormat = DateFormat('dd/MM/yyyy HH:mm');
-  static final DateFormat _monthYearFormat = DateFormat('MM/yyyy');
-  static final DateFormat _fullDateFormat = DateFormat('EEEE, dd MMMM yyyy');
 
   static String formatDate(DateTime date, String? locale) {
     return DateFormat.yMd(locale).format(date);

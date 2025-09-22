@@ -26,9 +26,7 @@ class ExpenseCard extends StatelessWidget {
       child: Card(
         elevation: 2,
         shadowColor: Colors.black.withOpacity(0.1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(16),
@@ -44,7 +42,9 @@ class ExpenseCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: _getCategoryColor(expense.category).withOpacity(0.1),
+                        color: _getCategoryColor(
+                          expense.category,
+                        ).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: FaIcon(
@@ -53,32 +53,29 @@ class ExpenseCard extends StatelessWidget {
                         size: 20,
                       ),
                     ),
-                    
+
                     const SizedBox(width: 12),
-                    
+
                     // Title and Category
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            expense.title,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
                           const SizedBox(height: 2),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
-                              color: _getCategoryColor(expense.category).withOpacity(0.1),
+                              color: _getCategoryColor(
+                                expense.category,
+                              ).withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: _getCategoryColor(expense.category).withOpacity(0.3),
+                                color: _getCategoryColor(
+                                  expense.category,
+                                ).withOpacity(0.3),
                                 width: 1,
                               ),
                             ),
@@ -91,10 +88,19 @@ class ExpenseCard extends StatelessWidget {
                               ),
                             ),
                           ),
+                          Text(
+                            expense.title,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 12,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                     ),
-                    
+
                     // Amount
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -108,7 +114,10 @@ class ExpenseCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          DateFormatter.formatDate(expense.date, context.l10n.localeName),
+                          DateFormatter.formatDate(
+                            expense.date,
+                            context.l10n.localeName,
+                          ),
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -118,7 +127,7 @@ class ExpenseCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                
+
                 // Description
                 if (expense.description.isNotEmpty) ...[
                   const SizedBox(height: 12),
@@ -133,7 +142,7 @@ class ExpenseCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
-                
+
                 // Footer Row
                 const SizedBox(height: 12),
                 Row(
@@ -148,7 +157,10 @@ class ExpenseCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          DateFormatter.formatTime(expense.createdAt, context.l10n.localeName),
+                          DateFormatter.formatTime(
+                            expense.createdAt,
+                            context.l10n.localeName,
+                          ),
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -156,9 +168,9 @@ class ExpenseCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    
+
                     const Spacer(),
-                    
+
                     // Action Buttons
                     Row(
                       children: [
@@ -213,7 +225,7 @@ class ExpenseCard extends StatelessWidget {
       (cat) => cat['name'] == category,
       orElse: () => Constants.defaultCategories.last,
     );
-    
+
     final colorHex = categoryData['color'] as String;
     return Color(int.parse(colorHex.replaceFirst('#', '0xFF')));
   }
@@ -223,7 +235,7 @@ class ExpenseCard extends StatelessWidget {
       (cat) => cat['name'] == category,
       orElse: () => Constants.defaultCategories.last,
     );
-    
+
     final iconName = categoryData['icon'] as String;
     switch (iconName) {
       case 'utensils':
