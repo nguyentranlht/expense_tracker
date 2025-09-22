@@ -1,5 +1,6 @@
 import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../expense_tracking/domain/entities/expense.dart';
 import '../../../../core/utils/formatters.dart';
@@ -24,15 +25,15 @@ class RecentExpensesCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const FaIcon(
+                FaIcon(
                   FontAwesomeIcons.clockRotateLeft,
-                  size: 20,
+                  size: 18.sp,
                 ),
                 const SizedBox(width: 8),
                  Text(
                   context.l10n.recent_expenses_card,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -47,14 +48,14 @@ class RecentExpensesCard extends StatelessWidget {
             const SizedBox(height: 12),
             
             if (expenses.isEmpty)
-              const Center(
+              Center(
                 child: Padding(
                   padding: EdgeInsets.all(24),
                   child: Text(
-                    'Chưa có chi tiêu nào',
+                    context.l10n.noExpenses,
                     style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                     ),
                   ),
                 ),
@@ -78,23 +79,23 @@ class RecentExpensesCard extends StatelessWidget {
                       child: FaIcon(
                         _getCategoryIcon(expense.category),
                         color: _getCategoryColor(expense.category),
-                        size: 16,
+                        size: 22.sp,
                       ),
                     ),
                     title: Text(
-                      expense.title,
-                      style: const TextStyle(
+                      expense.category,
+                      style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 14,
+                        fontSize: 16.sp,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: Text(
-                      expense.category,
+                      expense.title,
                       style: TextStyle(
                         color: Colors.grey[600],
-                        fontSize: 12,
+                        fontSize: 14.sp,
                       ),
                     ),
                     trailing: Column(
@@ -103,17 +104,17 @@ class RecentExpensesCard extends StatelessWidget {
                       children: [
                         Text(
                           CurrencyFormatter.format(expense.amount),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.red,
-                            fontSize: 14,
+                            fontSize: 16.sp,
                           ),
                         ),
                         Text(
                           DateFormatter.formatShortDate(expense.date, context.l10n.localeName),
                           style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: 12,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ],
