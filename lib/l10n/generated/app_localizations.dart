@@ -284,11 +284,23 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get home;
 
+  /// No description provided for @overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overview;
+
   /// No description provided for @statistics.
   ///
   /// In en, this message translates to:
   /// **'Statistics'**
   String get statistics;
+
+  /// No description provided for @monthlyTotalExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Total Expenses:'**
+  String get monthlyTotalExpenses;
 }
 
 class _AppLocalizationsDelegate

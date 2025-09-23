@@ -1,5 +1,8 @@
+import 'package:expense_tracker/core/extensions/context_extensions.dart';
+import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../expense_tracking/domain/entities/expense.dart';
 import '../../../../core/utils/formatters.dart';
@@ -40,16 +43,16 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
             // Header
             Row(
               children: [
-                const FaIcon(
+                FaIcon(
                   FontAwesomeIcons.chartLine,
-                  size: 20,
+                  size: 18.sp,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Chi tiêu theo ngày',
-                    style: const TextStyle(
-                      fontSize: 18,
+                    context.l10n.overview,
+                    style: TextStyle(
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -65,20 +68,20 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Theme.of(context).primaryColor.withOpacity(0.1),
-                    Theme.of(context).primaryColor.withOpacity(0.05),
+                    context.cs.primary.withOpacity(0.1),
+                    context.cs.primary.withOpacity(0.05),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: Theme.of(context).primaryColor.withOpacity(0.2),
+                  color: context.cs.primary.withOpacity(0.2),
                   width: 1,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Theme.of(context).primaryColor.withOpacity(0.1),
+                    color: context.cs.primary.withOpacity(0.1),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -106,8 +109,8 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                         '$monthName ${selectedMonth.year}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Theme.of(context).primaryColor,
+                          fontSize: 18,
+                          color: context.cs.primary,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -142,9 +145,9 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Tổng chi tiêu tháng:',
+                    context.l10n.monthlyTotalExpenses,
                     style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       color: Colors.grey.shade700,
                     ),
                   ),
@@ -152,7 +155,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                     CurrencyFormatter.format(_getTotalForMonth(dailyData)),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 18,
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
@@ -163,7 +166,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
             const SizedBox(height: 20),
             
             if (dailyData.isEmpty)
-              const Center(
+              Center(
                 child: Padding(
                   padding: EdgeInsets.all(32),
                   child: Column(
@@ -171,7 +174,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                       Icon(Icons.trending_up, size: 48, color: Colors.grey),
                       SizedBox(height: 16),
                       Text(
-                        'Không có chi tiêu nào trong tháng này',
+                        context.l10n.noExpenses,
                         style: TextStyle(color: Colors.grey, fontSize: 16),
                         textAlign: TextAlign.center,
                       ),
@@ -236,7 +239,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: 65,
+                          reservedSize: 40,
                           interval: _getHorizontalInterval(dailyData),
                           getTitlesWidget: (value, meta) {
                             return Padding(
@@ -271,16 +274,6 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                         color: Theme.of(context).primaryColor,
                         barWidth: 3,
                         isStrokeCapRound: true,
-                        dotData: FlDotData(
-                          show: true,
-                          getDotPainter: (spot, percent, barData, index) =>
-                            FlDotCirclePainter(
-                              radius: 4,
-                              color: Colors.white,
-                              strokeWidth: 2,
-                              strokeColor: Theme.of(context).primaryColor,
-                            ),
-                        ),
                         belowBarData: BarAreaData(
                           show: true,
                           color: Theme.of(context).primaryColor.withOpacity(0.1),
@@ -321,7 +314,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                     'Ngày chi nhiều nhất',
                     _getMaxDayInfo(dailyData),
                     Icons.trending_up,
-                    Colors.red,
+                    context.cs.error,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -330,7 +323,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                     'Trung bình/ngày',
                     CurrencyFormatter.format(_getAveragePerDay(dailyData)),
                     Icons.analytics,
-                    Colors.blue,
+                    context.cs.primary,
                   ),
                 ),
               ],
@@ -438,13 +431,13 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
         children: [
           Row(
             children: [
-              Icon(icon, size: 16, color: color),
+              Icon(icon, size: 14.w, color: color),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
                   title,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 10.w,
                     color: Colors.grey.shade600,
                     fontWeight: FontWeight.w500,
                   ),
@@ -456,7 +449,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
           Text(
             value,
             style: TextStyle(
-              fontSize: 13,
+              fontSize: 13.w,
               fontWeight: FontWeight.bold,
               color: color,
             ),

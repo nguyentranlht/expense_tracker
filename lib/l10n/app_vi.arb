@@ -32,5 +32,7 @@
   "expenseReport": "Báo cáo chi tiêu",
   "viewAll": "Xem tất cả",
   "home": "Trang chủ",
-  "statistics": "Thống kê"
+  "overview": "Tổng quan",
+  "statistics": "Thống kê",
+  "monthlyTotalExpenses": "Tổng chi tiêu tháng:"
 }

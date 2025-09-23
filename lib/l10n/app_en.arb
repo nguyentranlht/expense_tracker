@@ -89,5 +89,7 @@
   "expenseReport": "Expense Report",
   "viewAll": "View All",
   "home": "Home",
-  "statistics": "Statistics"
+  "overview": "Overview",
+  "statistics": "Statistics",
+  "monthlyTotalExpenses": "Monthly Total Expenses:"
 }

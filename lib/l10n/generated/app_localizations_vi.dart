@@ -102,5 +102,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get home => 'Trang chủ';
 
   @override
+  String get overview => 'Tổng quan';
+
+  @override
   String get statistics => 'Thống kê';
+
+  @override
+  String get monthlyTotalExpenses => 'Tổng chi tiêu tháng:';
 }

@@ -102,5 +102,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
+  String get overview => 'Overview';
+
+  @override
   String get statistics => 'Statistics';
+
+  @override
+  String get monthlyTotalExpenses => 'Monthly Total Expenses:';
 }

@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         context.l10n.hello,
                         style: TextStyle(
-                          fontSize: 16.sp,
+                          fontSize: 16.r,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                           context.l10n.localeName,
                         ),
                         style: TextStyle(
-                          fontSize: 14.sp,
+                          fontSize: 14.r,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
