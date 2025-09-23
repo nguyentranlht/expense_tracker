@@ -10,10 +10,7 @@ import '../../../../core/utils/formatters.dart';
 class MonthlyChartCard extends StatefulWidget {
   final List<Expense> expenses;
 
-  const MonthlyChartCard({
-    super.key,
-    required this.expenses,
-  });
+  const MonthlyChartCard({super.key, required this.expenses});
 
   @override
   State<MonthlyChartCard> createState() => _MonthlyChartCardState();
@@ -35,18 +32,15 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
     final monthName = _getMonthName(selectedMonth.month);
 
     return Card(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
             Row(
               children: [
-                FaIcon(
-                  FontAwesomeIcons.chartLine,
-                  size: 18.sp,
-                ),
+                FaIcon(FontAwesomeIcons.chartLine, size: 18.sp),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -59,9 +53,9 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Month selector
             Container(
               padding: const EdgeInsets.all(12),
@@ -117,15 +111,17 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                     ),
                   ),
                   IconButton(
-                    onPressed: _canGoToNextMonth() ? () {
-                      setState(() {
-                        selectedMonth = DateTime(
-                          selectedMonth.year,
-                          selectedMonth.month + 1,
-                          1,
-                        );
-                      });
-                    } : null,
+                    onPressed: _canGoToNextMonth()
+                        ? () {
+                            setState(() {
+                              selectedMonth = DateTime(
+                                selectedMonth.year,
+                                selectedMonth.month + 1,
+                                1,
+                              );
+                            });
+                          }
+                        : null,
                     icon: const Icon(Icons.arrow_forward_ios, size: 16),
                   ),
                 ],
@@ -133,7 +129,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
             ),
 
             const SizedBox(height: 20),
-            
+
             // Total for month
             Container(
               padding: const EdgeInsets.all(12),
@@ -164,7 +160,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
             ),
 
             const SizedBox(height: 20),
-            
+
             if (dailyData.isEmpty)
               Center(
                 child: Padding(
@@ -276,7 +272,9 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                         isStrokeCapRound: true,
                         belowBarData: BarAreaData(
                           show: true,
-                          color: Theme.of(context).primaryColor.withOpacity(0.1),
+                          color: Theme.of(
+                            context,
+                          ).primaryColor.withOpacity(0.1),
                         ),
                       ),
                     ],
@@ -303,15 +301,15 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                   ),
                 ),
               ),
-              
+
             const SizedBox(height: 16),
-            
+
             // Summary stats
             Row(
               children: [
                 Expanded(
                   child: _buildStatCard(
-                    'Ngày chi nhiều nhất',
+                    'Ngày cao nhất',
                     _getMaxDayInfo(dailyData),
                     Icons.trending_up,
                     context.cs.error,
@@ -337,7 +335,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
   Map<int, double> _calculateDailyData() {
     final Map<int, double> dailyTotals = {};
     final daysInMonth = _getDaysInMonth();
-    
+
     // Initialize all days with 0
     for (int day = 1; day <= daysInMonth; day++) {
       dailyTotals[day] = 0.0;
@@ -345,7 +343,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
 
     // Calculate actual totals for selected month
     for (final expense in widget.expenses) {
-      if (expense.date.year == selectedMonth.year && 
+      if (expense.date.year == selectedMonth.year &&
           expense.date.month == selectedMonth.month) {
         final day = expense.date.day;
         dailyTotals[day] = (dailyTotals[day] ?? 0) + expense.amount;
@@ -354,13 +352,13 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
 
     // Remove days with 0 values for cleaner chart
     return Map.fromEntries(
-      dailyTotals.entries.where((entry) => entry.value > 0)
+      dailyTotals.entries.where((entry) => entry.value > 0),
     );
   }
 
   List<FlSpot> _buildLineChartSpots(Map<int, double> dailyData) {
     if (dailyData.isEmpty) return [];
-    
+
     return dailyData.entries.map((entry) {
       return FlSpot(entry.key.toDouble(), entry.value);
     }).toList();
@@ -383,16 +381,27 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
 
   String _getMonthName(int month) {
     const monthNames = [
-      '', 'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-      'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+      '',
+      'Tháng 1',
+      'Tháng 2',
+      'Tháng 3',
+      'Tháng 4',
+      'Tháng 5',
+      'Tháng 6',
+      'Tháng 7',
+      'Tháng 8',
+      'Tháng 9',
+      'Tháng 10',
+      'Tháng 11',
+      'Tháng 12',
     ];
     return monthNames[month];
   }
 
   bool _canGoToNextMonth() {
     final now = DateTime.now();
-    return selectedMonth.year < now.year || 
-           (selectedMonth.year == now.year && selectedMonth.month < now.month);
+    return selectedMonth.year < now.year ||
+        (selectedMonth.year == now.year && selectedMonth.month < now.month);
   }
 
   double _getTotalForMonth(Map<int, double> dailyData) {
@@ -401,24 +410,29 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
 
   String _getMaxDayInfo(Map<int, double> dailyData) {
     if (dailyData.isEmpty) return 'Không có';
-    
+
     final maxEntry = dailyData.entries.reduce(
-      (a, b) => a.value > b.value ? a : b
+      (a, b) => a.value > b.value ? a : b,
     );
-    
+
     return 'Ngày ${maxEntry.key}: ${CurrencyFormatter.format(maxEntry.value)}';
   }
 
   double _getAveragePerDay(Map<int, double> dailyData) {
     if (dailyData.isEmpty) return 0.0;
-    
+
     final total = _getTotalForMonth(dailyData);
     final daysWithExpenses = dailyData.length;
-    
+
     return total / daysWithExpenses;
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -446,12 +460,17 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
             ],
           ),
           const SizedBox(height: 8),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 13.w,
-              fontWeight: FontWeight.bold,
-              color: color,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 13.w,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

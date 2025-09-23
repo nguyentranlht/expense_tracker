@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                               Text(
                                 context.l10n.quickActions,
                                 style: TextStyle(
-                                  fontSize: 16.sp,
+                                  fontSize: 18.sp,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
