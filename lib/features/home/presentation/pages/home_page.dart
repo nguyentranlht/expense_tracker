@@ -41,58 +41,6 @@ class _HomePageState extends State<HomePage> {
     final endOfMonth = DateTime(now.year, now.month + 1, 0);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              context.l10n.hello,
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.normal),
-            ),
-            Text(
-              DateFormatter.formatFullDate(now, context.l10n.localeName),
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
-            ),
-          ],
-        ),
-        backgroundColor: context.cs.inversePrimary,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(FontAwesomeIcons.database),
-            onPressed: () async {
-              try {
-                logger.i('Resetting database...');
-                final dbHelper = DatabaseHelper.instance;
-                await dbHelper.deleteDatabase();
-                await dbHelper.database; // Recreate database with sample data
-                context.read<ExpenseBloc>().add(LoadExpenses());
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Database reset với sample data thành công!'),
-                    backgroundColor: Colors.green,
-                  ),
-                );
-              } catch (e) {
-                logger.e('Error resetting database: $e');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Lỗi reset database: $e'),
-                    backgroundColor: context.cs.error,
-                  ),
-                );
-              }
-            },
-          ),
-          IconButton(
-            icon: const Icon(FontAwesomeIcons.bell),
-            onPressed: () {
-              // TODO: Implement notifications
-              logger.i(context.l10n.localeName);
-            },
-          ),
-        ],
-      ),
       body: BlocBuilder<ExpenseBloc, ExpenseState>(
         builder: (context, state) {
           logger.i('Current ExpenseState: $state');
@@ -162,105 +110,177 @@ class _HomePageState extends State<HomePage> {
             onRefresh: () async {
               context.read<ExpenseBloc>().add(LoadExpenses());
             },
-            child: SingleChildScrollView(
+            child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Quick Overview
-                  OverviewCard(
-                    totalExpenses: totalExpenses,
-                    todayExpenses: todayTotal,
-                    monthExpenses: monthTotal,
-                    transactionCount: expenses.length,
-                    balance: 0.0, // TODO: Implement balance calculation
+              slivers: [
+                // SliverAppBar that hides when scrolling
+                SliverAppBar(
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        context.l10n.hello,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      Text(
+                        DateFormatter.formatFullDate(
+                          now,
+                          context.l10n.localeName,
+                        ),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
                   ),
-
-                  const SizedBox(height: 20),
-
-                  // Quick Actions
-                  Card(
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            context.l10n.quickActions,
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
+                  backgroundColor: context.cs.inversePrimary,
+                  elevation: 0,
+                  floating: true, // AppBar appears when scrolling down
+                  snap: true, // AppBar snaps into view
+                  actions: [
+                    IconButton(
+                      icon: const Icon(FontAwesomeIcons.database),
+                      onPressed: () async {
+                        try {
+                          logger.i('Resetting database...');
+                          final dbHelper = DatabaseHelper.instance;
+                          await dbHelper.deleteDatabase();
+                          await dbHelper
+                              .database; // Recreate database with sample data
+                          context.read<ExpenseBloc>().add(LoadExpenses());
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Database reset với sample data thành công!',
+                              ),
+                              backgroundColor: Colors.green,
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          );
+                        } catch (e) {
+                          logger.e('Error resetting database: $e');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Lỗi reset database: $e'),
+                              backgroundColor: context.cs.error,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(FontAwesomeIcons.bell),
+                      onPressed: () {
+                        // TODO: Implement notifications
+                        logger.i(context.l10n.localeName);
+                      },
+                    ),
+                  ],
+                ),
+                // Content
+                SliverPadding(
+                  padding: const EdgeInsets.all(16),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate([
+                      // Quick Overview
+                      OverviewCard(
+                        totalExpenses: totalExpenses,
+                        todayExpenses: todayTotal,
+                        monthExpenses: monthTotal,
+                        transactionCount: expenses.length,
+                        balance: 0.0, // TODO: Implement balance calculation
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Quick Actions
+                      Card(
+                        elevation: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildQuickAction(
-                                context,
-                                icon: FontAwesomeIcons.plus,
-                                label: context.l10n.addExpense,
-                                color: Colors.red,
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddEditExpensePage(),
-                                    ),
-                                  );
-                                },
+                              Text(
+                                context.l10n.quickActions,
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                              _buildQuickAction(
-                                context,
-                                icon: FontAwesomeIcons.chartPie,
-                                label: context.l10n.viewStatistics,
-                                color: Colors.purple,
-                                onTap: () {
-                                  // TODO: Navigate to statistics
-                                },
-                              ),
-                              _buildQuickAction(
-                                context,
-                                icon: FontAwesomeIcons.listUl,
-                                label: context.l10n.list,
-                                color: Colors.orange,
-                                onTap: () {
-                                  // TODO: Navigate to expenses list
-                                },
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  _buildQuickAction(
+                                    context,
+                                    icon: FontAwesomeIcons.plus,
+                                    label: context.l10n.addExpense,
+                                    color: Colors.red,
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AddEditExpensePage(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  _buildQuickAction(
+                                    context,
+                                    icon: FontAwesomeIcons.chartPie,
+                                    label: context.l10n.viewStatistics,
+                                    color: Colors.purple,
+                                    onTap: () {
+                                      // TODO: Navigate to statistics
+                                    },
+                                  ),
+                                  _buildQuickAction(
+                                    context,
+                                    icon: FontAwesomeIcons.listUl,
+                                    label: context.l10n.list,
+                                    color: Colors.orange,
+                                    onTap: () {
+                                      // TODO: Navigate to expenses list
+                                    },
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Recent expenses sorted by date (newest first), limit to 5 items
-                  RecentExpensesCard(
-                    expenses:
-                        (expenses.toList()
-                              ..sort((a, b) => b.date.compareTo(a.date)))
-                            .take(5)
-                            .toList(),
-                    onViewAllPressed: () {
-                      // Navigate to expense list - implement later
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Navigate to expenses list'),
                         ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 20),
+                      ),
 
-                  // Monthly Chart
-                  MonthlyChartCard(expenses: expenses),
-                ],
-              ),
+                      const SizedBox(height: 20),
+
+                      // Recent expenses sorted by date (newest first), limit to 5 items
+                      RecentExpensesCard(
+                        expenses:
+                            (expenses.toList()
+                                  ..sort((a, b) => b.date.compareTo(a.date)))
+                                .take(5)
+                                .toList(),
+                        onViewAllPressed: () {
+                          // Navigate to expense list - implement later
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Navigate to expenses list'),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Monthly Chart
+                      MonthlyChartCard(expenses: expenses),
+                    ]),
+                  ),
+                ),
+              ],
             ),
           );
         },

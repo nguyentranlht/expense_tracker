@@ -63,6 +63,7 @@ class RecentExpensesCard extends StatelessWidget {
             else
               ListView.separated(
                 shrinkWrap: true,
+                padding: EdgeInsets.zero,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: expenses.length,
                 separatorBuilder: (context, index) => const Divider(height: 1),
