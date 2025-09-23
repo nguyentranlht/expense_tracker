@@ -406,7 +406,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
       (a, b) => a.value > b.value ? a : b
     );
     
-    return 'Ngày ${maxEntry.key}\n${CurrencyFormatter.formatCompact(maxEntry.value)}';
+    return 'Ngày ${maxEntry.key}: ${CurrencyFormatter.format(maxEntry.value)}';
   }
 
   double _getAveragePerDay(Map<int, double> dailyData) {
