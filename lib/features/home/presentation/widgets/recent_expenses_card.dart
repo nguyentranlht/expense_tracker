@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../expense_tracking/domain/entities/expense.dart';
 import '../../../../core/utils/formatters.dart';
+import '../../../../core/utils/category_helper.dart';
 
 class RecentExpensesCard extends StatelessWidget {
   final List<Expense> expenses;
@@ -73,17 +74,11 @@ class RecentExpensesCard extends StatelessWidget {
                   final expense = expenses[index];
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
-                    leading: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: _getCategoryColor(expense.category).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: FaIcon(
-                        _getCategoryIcon(expense.category),
-                        color: _getCategoryColor(expense.category),
-                        size: 22.sp,
-                      ),
+                    leading: CategoryHelper.buildCategoryIconContainer(
+                      expense.category,
+                      size: 22.sp,
+                      padding: 8,
+                      borderRadius: 8,
                     ),
                     title: Text(
                       expense.category,
@@ -131,45 +126,5 @@ class RecentExpensesCard extends StatelessWidget {
     );
   }
 
-  Color _getCategoryColor(String category) {
-    switch (category) {
-      case 'Ăn uống':
-        return Colors.orange;
-      case 'Xăng xe':
-        return Colors.blue;
-      case 'Mua sắm':
-        return Colors.purple;
-      case 'Giải trí':
-        return Colors.pink;
-      case 'Y tế':
-        return Colors.red;
-      case 'Giáo dục':
-        return Colors.green;
-      case 'Nhà ở':
-        return Colors.brown;
-      default:
-        return Colors.grey;
-    }
-  }
 
-  IconData _getCategoryIcon(String category) {
-    switch (category) {
-      case 'Ăn uống':
-        return FontAwesomeIcons.utensils;
-      case 'Xăng xe':
-        return FontAwesomeIcons.gasPump;
-      case 'Mua sắm':
-        return FontAwesomeIcons.bagShopping;
-      case 'Giải trí':
-        return FontAwesomeIcons.gamepad;
-      case 'Y tế':
-        return FontAwesomeIcons.heartPulse;
-      case 'Giáo dục':
-        return FontAwesomeIcons.graduationCap;
-      case 'Nhà ở':
-        return FontAwesomeIcons.house;
-      default:
-        return FontAwesomeIcons.ellipsis;
-    }
-  }
 }

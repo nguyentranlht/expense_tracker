@@ -1,7 +1,7 @@
 import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../../core/constants/constants.dart';
+import '../../../../core/utils/category_helper.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../domain/entities/expense.dart';
 
@@ -39,19 +39,11 @@ class ExpenseCard extends StatelessWidget {
                 Row(
                   children: [
                     // Category Icon
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: _getCategoryColor(
-                          expense.category,
-                        ).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: FaIcon(
-                        _getCategoryIcon(expense.category),
-                        color: _getCategoryColor(expense.category),
-                        size: 20,
-                      ),
+                    CategoryHelper.buildCategoryIconContainer(
+                      expense.category,
+                      size: 20,
+                      padding: 12,
+                      borderRadius: 12,
                     ),
 
                     const SizedBox(width: 12),
@@ -62,31 +54,10 @@ class ExpenseCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 2),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _getCategoryColor(
-                                expense.category,
-                              ).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: _getCategoryColor(
-                                  expense.category,
-                                ).withOpacity(0.3),
-                                width: 1,
-                              ),
-                            ),
-                            child: Text(
-                              expense.category,
-                              style: TextStyle(
-                                color: _getCategoryColor(expense.category),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                          CategoryHelper.buildCategoryChip(
+                            expense.category,
+                            fontSize: 12,
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           ),
                           Text(
                             expense.title,
@@ -220,40 +191,5 @@ class ExpenseCard extends StatelessWidget {
     );
   }
 
-  Color _getCategoryColor(String category) {
-    final categoryData = Constants.defaultCategories.firstWhere(
-      (cat) => cat['name'] == category,
-      orElse: () => Constants.defaultCategories.last,
-    );
 
-    final colorHex = categoryData['color'] as String;
-    return Color(int.parse(colorHex.replaceFirst('#', '0xFF')));
-  }
-
-  IconData _getCategoryIcon(String category) {
-    final categoryData = Constants.defaultCategories.firstWhere(
-      (cat) => cat['name'] == category,
-      orElse: () => Constants.defaultCategories.last,
-    );
-
-    final iconName = categoryData['icon'] as String;
-    switch (iconName) {
-      case 'utensils':
-        return FontAwesomeIcons.utensils;
-      case 'gas_pump':
-        return FontAwesomeIcons.gasPump;
-      case 'bag_shopping':
-        return FontAwesomeIcons.bagShopping;
-      case 'gamepad':
-        return FontAwesomeIcons.gamepad;
-      case 'heart_pulse':
-        return FontAwesomeIcons.heartPulse;
-      case 'graduation_cap':
-        return FontAwesomeIcons.graduationCap;
-      case 'house':
-        return FontAwesomeIcons.house;
-      default:
-        return FontAwesomeIcons.ellipsis;
-    }
-  }
 }
