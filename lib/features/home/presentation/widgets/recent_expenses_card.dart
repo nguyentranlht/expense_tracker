@@ -40,7 +40,9 @@ class RecentExpensesCard extends StatelessWidget {
                 const Spacer(),
                 TextButton(
                   onPressed: onViewAllPressed,
-                  child: Text(context.l10n.viewAll),
+                  child: Text(context.l10n.viewAll,
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
                 ),
               ],
             ),
