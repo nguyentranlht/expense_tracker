@@ -22,11 +22,12 @@ class DatabaseHelper {
       path,
       version: Constants.databaseVersion,
       onCreate: _createDB,
+      onUpgrade: _onUpgrade,
     );
   }
 
   Future _createDB(Database db, int version) async {
-    // Create expenses table
+    // Create expenses table with type column
     await db.execute('''
       CREATE TABLE ${Constants.expenseTable} (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,6 +35,7 @@ class DatabaseHelper {
         description TEXT NOT NULL,
         amount REAL NOT NULL,
         category TEXT NOT NULL,
+        type TEXT NOT NULL DEFAULT 'expense' CHECK (type IN ('income', 'expense')),
         date TEXT NOT NULL,
         created_at TEXT NOT NULL
       )
@@ -87,6 +89,40 @@ class DatabaseHelper {
       'value': 'true',
       'updated_at': DateTime.now().toIso8601String(),
     });
+  }
+
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2 && newVersion >= 2) {
+      // Add type column to existing expenses table
+      await db.execute('ALTER TABLE ${Constants.expenseTable} ADD COLUMN type TEXT DEFAULT "expense"');
+      
+      // Update constraint (SQLite doesn't support ADD CONSTRAINT, so we create a new table)
+      await db.execute('''
+        CREATE TABLE ${Constants.expenseTable}_new (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          title TEXT NOT NULL,
+          description TEXT NOT NULL,
+          amount REAL NOT NULL,
+          category TEXT NOT NULL,
+          type TEXT NOT NULL DEFAULT 'expense' CHECK (type IN ('income', 'expense')),
+          date TEXT NOT NULL,
+          created_at TEXT NOT NULL
+        )
+      ''');
+      
+      // Copy data from old table to new table
+      await db.execute('''
+        INSERT INTO ${Constants.expenseTable}_new 
+        (id, title, description, amount, category, type, date, created_at)
+        SELECT id, title, description, amount, category, 
+               COALESCE(type, 'expense') as type, date, created_at
+        FROM ${Constants.expenseTable}
+      ''');
+      
+      // Drop old table and rename new one
+      await db.execute('DROP TABLE ${Constants.expenseTable}');
+      await db.execute('ALTER TABLE ${Constants.expenseTable}_new RENAME TO ${Constants.expenseTable}');
+    }
   }
 
   Future close() async {

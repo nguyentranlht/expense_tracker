@@ -8,6 +8,7 @@ class ExpenseModel extends Expense {
     required super.description,
     required super.amount,
     required super.category,
+    super.type = TransactionType.expense,
     required super.date,
     required super.createdAt,
   });
@@ -19,6 +20,9 @@ class ExpenseModel extends Expense {
       description: json['description'] as String,
       amount: (json['amount'] as num).toDouble(),
       category: json['category'] as String,
+      type: json['type'] != null 
+          ? (json['type'] == 'income' ? TransactionType.income : TransactionType.expense)
+          : TransactionType.expense, // Default for backward compatibility
       date: DateTime.parse(json['date'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
     );
@@ -32,6 +36,7 @@ class ExpenseModel extends Expense {
       'description': description,
       'amount': amount,
       'category': category,
+      'type': typeString,
       'date': dateFormatter.format(date),
       'created_at': dateFormatter.format(createdAt),
     };
@@ -44,6 +49,7 @@ class ExpenseModel extends Expense {
       description: expense.description,
       amount: expense.amount,
       category: expense.category,
+      type: expense.type,
       date: expense.date,
       createdAt: expense.createdAt,
     );
@@ -56,6 +62,7 @@ class ExpenseModel extends Expense {
     String? description,
     double? amount,
     String? category,
+    TransactionType? type,
     DateTime? date,
     DateTime? createdAt,
   }) {
@@ -65,6 +72,7 @@ class ExpenseModel extends Expense {
       description: description ?? this.description,
       amount: amount ?? this.amount,
       category: category ?? this.category,
+      type: type ?? this.type,
       date: date ?? this.date,
       createdAt: createdAt ?? this.createdAt,
     );

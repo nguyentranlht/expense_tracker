@@ -101,10 +101,10 @@ class RecentExpensesCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          CurrencyFormatter.format(expense.amount),
+                          '${expense.isIncome ? '+' : '-'}${CurrencyFormatter.format(expense.amount)}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.red,
+                            color: expense.isIncome ? Colors.green : Colors.red,
                             fontSize: 16.sp,
                           ),
                         ),

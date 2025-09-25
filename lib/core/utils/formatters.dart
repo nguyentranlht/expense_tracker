@@ -13,12 +13,15 @@ class CurrencyFormatter {
   }
 
   static String formatCompact(double amount) {
-    if (amount >= 1000000) {
-      return '${(amount / 1000000).toStringAsFixed(1)}M';
-    } else if (amount >= 1000) {
-      return '${(amount / 1000).toStringAsFixed(0)}K';
+    final absAmount = amount.abs();
+    final sign = amount < 0 ? '-' : '';
+    
+    if (absAmount >= 1000000) {
+      return '$sign${(absAmount / 1000000).toStringAsFixed(0)}M';
+    } else if (absAmount >= 1000) {
+      return '$sign${(absAmount / 1000).toStringAsFixed(0)}K';
     } else {
-      return amount.toStringAsFixed(0);
+      return '$sign${absAmount.toStringAsFixed(0)}';
     }
   }
 }
@@ -42,7 +45,7 @@ class DateFormatter {
   }
 
   static String formatMonthYear(DateTime date, String? locale) {
-    return DateFormat.yMMM(locale).format(date);
+    return DateFormat.yMMMM(locale).format(date);
   }
 
   static String formatFullDate(DateTime date, String? locale) {

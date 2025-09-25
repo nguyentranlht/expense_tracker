@@ -23,8 +23,15 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
 
   String _selectedCategory = Constants.defaultCategories.first['name'];
   DateTime _selectedDate = DateTime.now();
+  TransactionType _selectedType = TransactionType.expense;
 
   bool get isEditing => widget.expense != null;
+  
+  List<Map<String, dynamic>> get _currentCategories {
+    return _selectedType == TransactionType.income 
+        ? Constants.defaultIncomeCategories 
+        : Constants.defaultCategories;
+  }
 
   @override
   void initState() {
@@ -35,7 +42,10 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
       _amountController.text = widget.expense!.amount.toString();
       _selectedCategory = widget.expense!.category;
       _selectedDate = widget.expense!.date;
+      _selectedType = widget.expense!.type;
     }
+    // Set default category for current type
+    _selectedCategory = _currentCategories.first['name'];
   }
 
   @override
@@ -71,8 +81,12 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(isEditing ? 'Sửa Chi tiêu' : 'Thêm Chi tiêu'),
-          backgroundColor: Theme.of(context).primaryColor,
+          title: Text(isEditing 
+              ? 'Sửa ${_selectedType == TransactionType.income ? "Thu nhập" : "Chi tiêu"}' 
+              : 'Thêm ${_selectedType == TransactionType.income ? "Thu nhập" : "Chi tiêu"}'),
+          backgroundColor: _selectedType == TransactionType.income 
+              ? Colors.green 
+              : Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           elevation: 0,
         ),
@@ -89,6 +103,77 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // Transaction type toggle
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 16),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[100],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _selectedType = TransactionType.expense;
+                                          _selectedCategory = Constants.defaultCategories.first['name'];
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        decoration: BoxDecoration(
+                                          color: _selectedType == TransactionType.expense
+                                              ? Theme.of(context).primaryColor
+                                              : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        child: Text(
+                                          'Chi tiêu',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: _selectedType == TransactionType.expense
+                                                ? Colors.white
+                                                : Colors.grey[600],
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _selectedType = TransactionType.income;
+                                          _selectedCategory = Constants.defaultIncomeCategories.first['name'];
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 16),
+                                        decoration: BoxDecoration(
+                                          color: _selectedType == TransactionType.income
+                                              ? Colors.green
+                                              : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        child: Text(
+                                          'Thu nhập',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: _selectedType == TransactionType.income
+                                                ? Colors.white
+                                                : Colors.grey[600],
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
                             // Title field
                             TextFormField(
                               controller: _titleController,
@@ -144,12 +229,14 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
                             // Category dropdown
                             DropdownButtonFormField<String>(
                               value: _selectedCategory,
-                              decoration: const InputDecoration(
-                                labelText: 'Danh mục *',
-                                border: OutlineInputBorder(),
-                                prefixIcon: Icon(Icons.category),
+                              decoration: InputDecoration(
+                                labelText: _selectedType == TransactionType.income 
+                                    ? 'Nguồn thu nhập *' 
+                                    : 'Danh mục *',
+                                border: const OutlineInputBorder(),
+                                prefixIcon: const Icon(Icons.category),
                               ),
-                              items: Constants.defaultCategories.map((category) {
+                              items: _currentCategories.map((category) {
                                 return DropdownMenuItem<String>(
                                   value: category['name'] as String,
                                   child: Text(category['name'] as String),
@@ -191,7 +278,9 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
                       child: ElevatedButton(
                         onPressed: state is ExpenseLoading ? null : _saveExpense,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor,
+                          backgroundColor: _selectedType == TransactionType.income 
+                              ? Colors.green 
+                              : Theme.of(context).primaryColor,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -207,7 +296,9 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
                                 ),
                               )
                             : Text(
-                                isEditing ? 'Cập nhật' : 'Thêm mới',
+                                isEditing 
+                                    ? 'Cập nhật' 
+                                    : (_selectedType == TransactionType.income ? 'Thêm thu nhập' : 'Thêm chi tiêu'),
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -248,6 +339,7 @@ class _AddEditExpensePageState extends State<AddEditExpensePage> {
         description: _descriptionController.text.trim(),
         amount: double.parse(_amountController.text),
         category: _selectedCategory,
+        type: _selectedType,
         date: _selectedDate,
         createdAt: isEditing ? widget.expense!.createdAt : DateTime.now(),
       );

@@ -1,7 +1,7 @@
 class Constants {
   // Database
   static const String databaseName = 'expense_tracker.db';
-  static const int databaseVersion = 1;
+  static const int databaseVersion = 2; // Increased for type column
   
   // Tables
   static const String expenseTable = 'expenses';
@@ -53,6 +53,40 @@ class Constants {
       'name': 'Khác',
       'icon': 'ellipsis',
       'color': '#9E9E9E',
+    },
+  ];
+
+  // Income categories
+  static const List<Map<String, dynamic>> defaultIncomeCategories = [
+    {
+      'name': 'Lương',
+      'icon': 'money_bill',
+      'color': '#4CAF50',
+    },
+    {
+      'name': 'Thưởng',
+      'icon': 'gift',
+      'color': '#FF9800',
+    },
+    {
+      'name': 'Đầu tư',
+      'icon': 'chart_line',
+      'color': '#2196F3',
+    },
+    {
+      'name': 'Bán hàng',
+      'icon': 'store',
+      'color': '#9C27B0',
+    },
+    {
+      'name': 'Freelance',
+      'icon': 'laptop',
+      'color': '#00BCD4',
+    },
+    {
+      'name': 'Thu nhập khác',
+      'icon': 'plus_circle',
+      'color': '#4CAF50',
     },
   ];
   

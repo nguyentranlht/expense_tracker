@@ -93,18 +93,36 @@ class _HomePageState extends State<HomePage> {
                 expense.date.isBefore(endOfMonth.add(const Duration(days: 1)));
           }).toList();
 
-          final todayTotal = todayExpenses.fold<double>(
+          // Calculate totals with income/expense separation
+          final todayIncomeTotal = todayExpenses.where((expense) => expense.isIncome).fold<double>(
             0.0,
             (sum, expense) => sum + expense.amount,
           );
-          final monthTotal = monthExpenses.fold<double>(
+          final todayExpenseTotal = todayExpenses.where((expense) => !expense.isIncome).fold<double>(
             0.0,
             (sum, expense) => sum + expense.amount,
           );
-          final totalExpenses = expenses.fold<double>(
+          final todayTotal = todayIncomeTotal - todayExpenseTotal;
+
+          final monthIncomeTotal = monthExpenses.where((expense) => expense.isIncome).fold<double>(
             0.0,
             (sum, expense) => sum + expense.amount,
           );
+          final monthExpenseTotal = monthExpenses.where((expense) => !expense.isIncome).fold<double>(
+            0.0,
+            (sum, expense) => sum + expense.amount,
+          );
+          final monthTotal = monthIncomeTotal - monthExpenseTotal;
+
+          final totalIncome = expenses.where((expense) => expense.isIncome).fold<double>(
+            0.0,
+            (sum, expense) => sum + expense.amount,
+          );
+          final totalExpenses = expenses.where((expense) => !expense.isIncome).fold<double>(
+            0.0,
+            (sum, expense) => sum + expense.amount,
+          );
+          final netTotal = totalIncome - totalExpenses;
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -191,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                         todayExpenses: todayTotal,
                         monthExpenses: monthTotal,
                         transactionCount: expenses.length,
-                        balance: 0.0, // TODO: Implement balance calculation
+                        balance: netTotal, // Use net balance instead of 0.0
                       ),
 
                       const SizedBox(height: 20),

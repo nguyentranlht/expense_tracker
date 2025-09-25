@@ -100,7 +100,8 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(
-                        '$monthName ${selectedMonth.year}',
+                        // '$monthName ${selectedMonth.year}',
+                        DateFormatter.formatMonthYear(selectedMonth,context.l10n.localeName),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -141,18 +142,18 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    context.l10n.monthlyTotalExpenses,
+                    'Tổng thu chi trong tháng',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Colors.grey.shade700,
                     ),
                   ),
                   Text(
-                    CurrencyFormatter.format(_getTotalForMonth(dailyData)),
+                    '${_getTotalForMonth(dailyData) >= 0 ? '+' : ''}${CurrencyFormatter.format(_getTotalForMonth(dailyData))}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
-                      color: Theme.of(context).primaryColor,
+                      color: _getTotalForMonth(dailyData) >= 0 ? Colors.green : Colors.red,
                     ),
                   ),
                 ],
@@ -189,6 +190,13 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                       horizontalInterval: _getHorizontalInterval(dailyData),
                       verticalInterval: 5,
                       getDrawingHorizontalLine: (value) {
+                        // Highlight the zero line
+                        if (value == 0) {
+                          return FlLine(
+                            color: Colors.black.withOpacity(0.5),
+                            strokeWidth: 2,
+                          );
+                        }
                         return FlLine(
                           color: Colors.grey.withOpacity(0.2),
                           strokeWidth: 1,
@@ -261,7 +269,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                     ),
                     minX: 1,
                     maxX: _getDaysInMonth().toDouble(),
-                    minY: 0,
+                    minY: _getMinY(dailyData),
                     maxY: _getMaxY(dailyData),
                     lineBarsData: [
                       LineChartBarData(
@@ -270,11 +278,44 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                         color: Theme.of(context).primaryColor,
                         barWidth: 3,
                         isStrokeCapRound: true,
+                        dotData: FlDotData(
+                          show: true,
+                          getDotPainter: (spot, percent, barData, index) {
+                            final value = spot.y;
+                            final color = value >= 0 ? Colors.green : Colors.red;
+                            return FlDotCirclePainter(
+                              radius: 4,
+                              color: color,
+                              strokeWidth: 2,
+                              strokeColor: Colors.white,
+                            );
+                          },
+                        ),
                         belowBarData: BarAreaData(
                           show: true,
-                          color: Theme.of(
-                            context,
-                          ).primaryColor.withOpacity(0.1),
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.green.withOpacity(0.1),
+                              Colors.transparent,
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                          applyCutOffY: true,
+                          cutOffY: 0,
+                        ),
+                        aboveBarData: BarAreaData(
+                          show: true,
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.red.withOpacity(0.1),
+                              Colors.transparent,
+                            ],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                          ),
+                          applyCutOffY: true,
+                          cutOffY: 0,
                         ),
                       ),
                     ],
@@ -285,9 +326,12 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                           return touchedSpots.map((spot) {
                             final day = spot.x.toInt();
                             final amount = spot.y;
+                            final isPositive = amount >= 0;
+                            final label = isPositive ? 'Thặng dư' : 'Thâm hụt';
+                            
                             return LineTooltipItem(
-                              'Ngày $day\n${CurrencyFormatter.format(amount)}',
-                              const TextStyle(
+                              'Ngày $day\n$label: ${CurrencyFormatter.format(amount.abs())}',
+                              TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12,
@@ -302,30 +346,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                 ),
               ),
 
-            const SizedBox(height: 16),
-
-            // Summary stats
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    'Ngày cao nhất',
-                    _getMaxDayInfo(dailyData),
-                    Icons.trending_up,
-                    context.cs.error,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildStatCard(
-                    'Trung bình/ngày',
-                    CurrencyFormatter.format(_getAveragePerDay(dailyData)),
-                    Icons.analytics,
-                    context.cs.primary,
-                  ),
-                ),
-              ],
-            ),
+            
           ],
         ),
       ),
@@ -341,18 +362,19 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
       dailyTotals[day] = 0.0;
     }
 
-    // Calculate actual totals for selected month
+    // Calculate actual totals for selected month (income - expense)
     for (final expense in widget.expenses) {
       if (expense.date.year == selectedMonth.year &&
           expense.date.month == selectedMonth.month) {
         final day = expense.date.day;
-        dailyTotals[day] = (dailyTotals[day] ?? 0) + expense.amount;
+        final amount = expense.isIncome ? expense.amount : -expense.amount;
+        dailyTotals[day] = (dailyTotals[day] ?? 0) + amount;
       }
     }
 
     // Remove days with 0 values for cleaner chart
     return Map.fromEntries(
-      dailyTotals.entries.where((entry) => entry.value > 0),
+      dailyTotals.entries.where((entry) => entry.value != 0),
     );
   }
 
@@ -367,12 +389,20 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
   double _getMaxY(Map<int, double> dailyData) {
     if (dailyData.values.isEmpty) return 100000;
     final maxValue = dailyData.values.reduce((a, b) => a > b ? a : b);
-    return maxValue * 1.1; // Add 10% padding
+    return maxValue > 0 ? maxValue * 1.2 : maxValue.abs() * 0.2; // Add 20% padding
+  }
+
+  double _getMinY(Map<int, double> dailyData) {
+    if (dailyData.values.isEmpty) return -100000;
+    final minValue = dailyData.values.reduce((a, b) => a < b ? a : b);
+    return minValue < 0 ? minValue * 1.2 : minValue * -0.2; // Add 20% padding
   }
 
   double _getHorizontalInterval(Map<int, double> dailyData) {
     final maxY = _getMaxY(dailyData);
-    return maxY / 4; // Divide into 4 intervals
+    final minY = _getMinY(dailyData);
+    final range = maxY - minY;
+    return range / 6; // Divide into 6 intervals for better granularity
   }
 
   int _getDaysInMonth() {
