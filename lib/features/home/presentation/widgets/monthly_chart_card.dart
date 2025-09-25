@@ -29,7 +29,6 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
   @override
   Widget build(BuildContext context) {
     final dailyData = _calculateDailyData();
-    final monthName = _getMonthName(selectedMonth.month);
 
     return Card(
       child: Padding(
@@ -100,8 +99,10 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(
-                        // '$monthName ${selectedMonth.year}',
-                        DateFormatter.formatMonthYear(selectedMonth,context.l10n.localeName),
+                        DateFormatter.formatMonthYear(
+                          selectedMonth,
+                          context.l10n.localeName,
+                        ),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -142,7 +143,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Tổng thu chi trong tháng',
+                    context.l10n.monthlyTotalExpenses,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Colors.grey.shade700,
@@ -152,8 +153,9 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                     '${_getTotalForMonth(dailyData) >= 0 ? '+' : ''}${CurrencyFormatter.format(_getTotalForMonth(dailyData))}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: _getTotalForMonth(dailyData) >= 0 ? Colors.green : Colors.red,
+                      color: _getTotalForMonth(dailyData) >= 0
+                          ? Colors.green
+                          : Colors.red,
                     ),
                   ),
                 ],
@@ -282,7 +284,9 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                           show: true,
                           getDotPainter: (spot, percent, barData, index) {
                             final value = spot.y;
-                            final color = value >= 0 ? Colors.green : Colors.red;
+                            final color = value >= 0
+                                ? Colors.green
+                                : Colors.red;
                             return FlDotCirclePainter(
                               radius: 4,
                               color: color,
@@ -328,7 +332,7 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                             final amount = spot.y;
                             final isPositive = amount >= 0;
                             final label = isPositive ? 'Thặng dư' : 'Thâm hụt';
-                            
+
                             return LineTooltipItem(
                               'Ngày $day\n$label: ${CurrencyFormatter.format(amount.abs())}',
                               TextStyle(
@@ -345,8 +349,6 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
                   ),
                 ),
               ),
-
-            
           ],
         ),
       ),
@@ -389,7 +391,9 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
   double _getMaxY(Map<int, double> dailyData) {
     if (dailyData.values.isEmpty) return 100000;
     final maxValue = dailyData.values.reduce((a, b) => a > b ? a : b);
-    return maxValue > 0 ? maxValue * 1.2 : maxValue.abs() * 0.2; // Add 20% padding
+    return maxValue > 0
+        ? maxValue * 1.2
+        : maxValue.abs() * 0.2; // Add 20% padding
   }
 
   double _getMinY(Map<int, double> dailyData) {
@@ -409,25 +413,6 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
     return DateTime(selectedMonth.year, selectedMonth.month + 1, 0).day;
   }
 
-  String _getMonthName(int month) {
-    const monthNames = [
-      '',
-      'Tháng 1',
-      'Tháng 2',
-      'Tháng 3',
-      'Tháng 4',
-      'Tháng 5',
-      'Tháng 6',
-      'Tháng 7',
-      'Tháng 8',
-      'Tháng 9',
-      'Tháng 10',
-      'Tháng 11',
-      'Tháng 12',
-    ];
-    return monthNames[month];
-  }
-
   bool _canGoToNextMonth() {
     final now = DateTime.now();
     return selectedMonth.year < now.year ||
@@ -436,75 +421,5 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
 
   double _getTotalForMonth(Map<int, double> dailyData) {
     return dailyData.values.fold(0.0, (sum, amount) => sum + amount);
-  }
-
-  String _getMaxDayInfo(Map<int, double> dailyData) {
-    if (dailyData.isEmpty) return 'Không có';
-
-    final maxEntry = dailyData.entries.reduce(
-      (a, b) => a.value > b.value ? a : b,
-    );
-
-    return 'Ngày ${maxEntry.key}: ${CurrencyFormatter.format(maxEntry.value)}';
-  }
-
-  double _getAveragePerDay(Map<int, double> dailyData) {
-    if (dailyData.isEmpty) return 0.0;
-
-    final total = _getTotalForMonth(dailyData);
-    final daysWithExpenses = dailyData.length;
-
-    return total / daysWithExpenses;
-  }
-
-  Widget _buildStatCard(
-    String title,
-    String value,
-    IconData icon,
-    Color color,
-  ) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, size: 14.w, color: color),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 10.w,
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              value,
-              style: TextStyle(
-                fontSize: 13.w,
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

@@ -108,5 +108,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statistics => 'Statistics';
 
   @override
-  String get monthlyTotalExpenses => 'Monthly Total Expenses:';
+  String get monthlyTotalExpenses => 'Monthly Total Expenses: ';
 }

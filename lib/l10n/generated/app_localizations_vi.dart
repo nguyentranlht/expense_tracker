@@ -108,5 +108,5 @@ class AppLocalizationsVi extends AppLocalizations {
   String get statistics => 'Thống kê';
 
   @override
-  String get monthlyTotalExpenses => 'Tổng chi tiêu tháng:';
+  String get monthlyTotalExpenses => 'Tổng thu chi tháng: ';
 }

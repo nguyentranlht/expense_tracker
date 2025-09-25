@@ -299,7 +299,7 @@ abstract class AppLocalizations {
   /// No description provided for @monthlyTotalExpenses.
   ///
   /// In en, this message translates to:
-  /// **'Monthly Total Expenses:'**
+  /// **'Monthly Total Expenses: '**
   String get monthlyTotalExpenses;
 }
 
