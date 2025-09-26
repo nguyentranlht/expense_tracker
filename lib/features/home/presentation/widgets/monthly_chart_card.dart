@@ -133,32 +133,34 @@ class _MonthlyChartCardState extends State<MonthlyChartCard> {
             const SizedBox(height: 20),
 
             // Total for month
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    context.l10n.monthlyTotalExpenses,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade700,
+            FittedBox(
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      context.l10n.monthlyTotalExpenses,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade700,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${_getTotalForMonth(dailyData) >= 0 ? '+' : ''}${CurrencyFormatter.format(_getTotalForMonth(dailyData))}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: _getTotalForMonth(dailyData) >= 0
-                          ? Colors.green
-                          : Colors.red,
+                    Text(
+                      '${_getTotalForMonth(dailyData) >= 0 ? '+' : ''}${CurrencyFormatter.format(_getTotalForMonth(dailyData))}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: _getTotalForMonth(dailyData) >= 0
+                            ? Colors.green
+                            : Colors.red,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
 
