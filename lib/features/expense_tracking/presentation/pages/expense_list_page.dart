@@ -1,5 +1,6 @@
 import 'package:expense_tracker/core/extensions/context_extensions.dart';
 import 'package:expense_tracker/core/utils/formatters.dart';
+import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,12 +19,106 @@ class ExpenseListPage extends StatefulWidget {
 
 class _ExpenseListPageState extends State<ExpenseListPage> {
   String _selectedFilter = 'Tất cả'; // 'Tất cả', 'Chi tiêu', 'Thu nhập'
+  DateTime _selectedMonth = DateTime.now();
+  bool _isMonthPickerVisible = false;
 
   @override
   void initState() {
     super.initState();
     // Load expenses when page is initialized
     context.read<ExpenseBloc>().add(LoadExpenses());
+  }
+
+  List<dynamic> _filterExpensesByMonth(List<dynamic> expenses) {
+    return expenses.where((expense) {
+      final expenseDate = expense.date;
+      return expenseDate.year == _selectedMonth.year && 
+             expenseDate.month == _selectedMonth.month;
+    }).toList();
+  }
+
+  void _showMonthPicker() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          height: 300,
+          decoration: BoxDecoration(
+            color: context.cs.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  context.l10n.selectMonth,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: context.cs.onSurface,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: GridView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 2.5,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                  ),
+                  itemCount: 12,
+                  itemBuilder: (context, index) {
+                    final month = index + 1;
+                    final monthDate = DateTime(_selectedMonth.year, month);
+                    final isSelected = monthDate.month == _selectedMonth.month;
+                    
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _selectedMonth = DateTime(_selectedMonth.year, month);
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: isSelected ? context.cs.primary : context.cs.surface,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: isSelected ? context.cs.primary : Colors.grey[300]!,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            DateFormatter.formatMonth(monthDate, context.l10n.localeName),
+                            style: TextStyle(
+                              color: isSelected ? Colors.white : context.cs.onSurface,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -65,19 +160,24 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
               );
             }
 
-            // Calculate total income and expense
-            final totalIncome = state.expenses.fold<double>(
+
+
+            // Filter expenses by month first
+            final monthFilteredExpenses = _filterExpensesByMonth(state.expenses);
+            
+            // Calculate totals for the selected month
+            final totalIncome = monthFilteredExpenses.fold<double>(
               0.0,
               (sum, expense) => expense.isIncome ? sum + expense.amount : sum,
             );
 
-            final totalExpense = state.expenses.fold<double>(
+            final totalExpense = monthFilteredExpenses.fold<double>(
               0.0,
               (sum, expense) => !expense.isIncome ? sum + expense.amount : sum,
             );
-
+            
             // Filter expenses based on selected filter
-            final filteredExpenses = state.expenses.where((expense) {
+            final filteredExpenses = monthFilteredExpenses.where((expense) {
               switch (_selectedFilter) {
                 case 'Chi tiêu':
                   return !expense.isIncome;
@@ -92,7 +192,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
               slivers: [
                 // SliverAppBar với behavior ẩn/hiện
                 SliverAppBar(
-                  expandedHeight: 280.h,
+                  expandedHeight: 300.h,
                   pinned: true,
                   elevation: 0,
                   forceElevated: false,
@@ -161,8 +261,8 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                                 const SizedBox(width: 8),
                                 
                                 // Title
-                                const Text(
-                                  'Thu - chi',
+                                Text(
+                                  context.l10n.incomeExpense,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -246,9 +346,9 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                                           size: 24,
                                         ),
                                       ),
-                                      const Expanded(
+                                      Expanded(
                                         child: Text(
-                                          'Thu - chi',
+                                          context.l10n.incomeExpense,
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             color: Colors.white,
@@ -278,7 +378,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                               ),
                             ),
 
-                            // Dropdown tháng này với animation
+                            // Dropdown tháng này với animation và tương tác
                             Center(
                               child: TweenAnimationBuilder<double>(
                                 tween: Tween(begin: 0.0, end: 1.0),
@@ -288,60 +388,68 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                                     scale: 0.8 + (0.2 * value),
                                     child: Opacity(
                                       opacity: value,
-                                      child: Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          vertical: 12,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical: 10,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(
-                                            25,
+                                      child: GestureDetector(
+                                        onTap: _showMonthPicker,
+                                        child: AnimatedContainer(
+                                          duration: const Duration(milliseconds: 200),
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 12,
                                           ),
-                                          border: Border.all(
-                                            color: Colors.white.withOpacity(
-                                              0.3,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 20,
+                                            vertical: 10,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white.withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(
+                                              25,
                                             ),
-                                            width: 1,
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black.withOpacity(
-                                                0.1,
+                                            border: Border.all(
+                                              color: Colors.white.withOpacity(
+                                                0.3,
                                               ),
-                                              blurRadius: 10,
-                                              offset: const Offset(0, 5),
+                                              width: 1,
                                             ),
-                                          ],
-                                        ),
-                                        child: const Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              Icons.calendar_today_rounded,
-                                              color: Colors.white,
-                                              size: 18,
-                                            ),
-                                            SizedBox(width: 10),
-                                            Text(
-                                              'Tháng này',
-                                              style: TextStyle(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(
+                                                  0.1,
+                                                ),
+                                                blurRadius: 10,
+                                                offset: const Offset(0, 5),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(
+                                                Icons.calendar_today_rounded,
                                                 color: Colors.white,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
-                                                letterSpacing: 0.3,
+                                                size: 18,
                                               ),
-                                            ),
-                                            SizedBox(width: 8),
-                                            Icon(
-                                              Icons.expand_more_rounded,
-                                              color: Colors.white,
-                                              size: 20,
-                                            ),
-                                          ],
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                DateFormatter.formatMonthYear(_selectedMonth, context.l10n.localeName),
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  letterSpacing: 0.3,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              AnimatedRotation(
+                                                turns: _isMonthPickerVisible ? 0.5 : 0.0,
+                                                duration: const Duration(milliseconds: 200),
+                                                child: const Icon(
+                                                  Icons.expand_more_rounded,
+                                                  color: Colors.white,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),

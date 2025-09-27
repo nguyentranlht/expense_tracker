@@ -34,5 +34,7 @@
   "home": "Trang chủ",
   "overview": "Tổng quan",
   "statistics": "Thống kê",
-  "monthlyTotalExpenses": "Tổng thu chi tháng: "
+  "monthlyTotalExpenses": "Tổng thu chi tháng: ",
+  "selectMonth": "Chọn tháng",
+  "incomeExpense": "Thu - chi"
 }

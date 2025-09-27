@@ -15,7 +15,7 @@ class CurrencyFormatter {
   static String formatCompact(double amount) {
     final absAmount = amount.abs();
     final sign = amount < 0 ? '-' : '';
-    
+
     if (absAmount >= 1000000) {
       return '$sign${(absAmount / 1000000).toStringAsFixed(0)}M';
     } else if (absAmount >= 1000) {
@@ -27,7 +27,6 @@ class CurrencyFormatter {
 }
 
 class DateFormatter {
-
   static String formatDate(DateTime date, String? locale) {
     return DateFormat.yMd(locale).format(date);
   }
@@ -50,5 +49,9 @@ class DateFormatter {
 
   static String formatFullDate(DateTime date, String? locale) {
     return DateFormat.yMMMMEEEEd(locale).format(date);
+  }
+
+  static String formatMonth(DateTime date, String? locale) {
+    return DateFormat.MMMM(locale).format(date);
   }
 }

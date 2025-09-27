@@ -109,4 +109,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get monthlyTotalExpenses => 'Monthly Total Expenses: ';
+
+  @override
+  String get selectMonth => 'Select month';
+
+  @override
+  String get incomeExpense => 'Income - Expense';
 }

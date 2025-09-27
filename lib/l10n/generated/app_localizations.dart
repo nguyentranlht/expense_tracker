@@ -301,6 +301,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Monthly Total Expenses: '**
   String get monthlyTotalExpenses;
+
+  /// No description provided for @selectMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Select month'**
+  String get selectMonth;
+
+  /// No description provided for @incomeExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Income - Expense'**
+  String get incomeExpense;
 }
 
 class _AppLocalizationsDelegate

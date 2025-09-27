@@ -91,5 +91,7 @@
   "home": "Home",
   "overview": "Overview",
   "statistics": "Statistics",
-  "monthlyTotalExpenses": "Monthly Total Expenses: "
+  "monthlyTotalExpenses": "Monthly Total Expenses: ",
+  "selectMonth": "Select month",
+  "incomeExpense": "Income - Expense"
 }

@@ -109,4 +109,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get monthlyTotalExpenses => 'Tổng thu chi tháng: ';
+
+  @override
+  String get selectMonth => 'Chọn tháng';
+
+  @override
+  String get incomeExpense => 'Thu - chi';
 }
