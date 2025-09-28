@@ -1,3 +1,4 @@
+import 'package:expense_tracker/core/extensions/context_extensions.dart';
 import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:expense_tracker/features/expense_tracking/presentation/widgets/expense_flexible_bar.dart';
 import 'package:expense_tracker/widgets/app_dialog.dart';
@@ -117,6 +118,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                   pinned: true,
                   elevation: 0,
                   forceElevated: false,
+                  backgroundColor: context.cs.primary,
                   flexibleSpace: LayoutBuilder(
                     builder: (BuildContext context, BoxConstraints constraints) {
                       // Tính toán tỷ lệ collapse (0.0 = collapsed, 1.0 = expanded)
