@@ -313,6 +313,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Income - Expense'**
   String get incomeExpense;
+
+  /// No description provided for @deleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Confirmation'**
+  String get deleteConfirmTitle;
+
+  /// No description provided for @deleteConfirmContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this transaction?'**
+  String get deleteConfirmContent;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @income.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get income;
+
+  /// No description provided for @expense.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get expense;
 }
 
 class _AppLocalizationsDelegate

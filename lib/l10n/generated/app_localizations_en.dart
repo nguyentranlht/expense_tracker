@@ -115,4 +115,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get incomeExpense => 'Income - Expense';
+
+  @override
+  String get deleteConfirmTitle => 'Delete Confirmation';
+
+  @override
+  String get deleteConfirmContent =>
+      'Are you sure you want to delete this transaction?';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get income => 'Income';
+
+  @override
+  String get expense => 'Expense';
 }

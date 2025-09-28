@@ -93,5 +93,10 @@
   "statistics": "Statistics",
   "monthlyTotalExpenses": "Monthly Total Expenses: ",
   "selectMonth": "Select month",
-  "incomeExpense": "Income - Expense"
+  "incomeExpense": "Income - Expense",
+  "deleteConfirmTitle": "Delete Confirmation",
+  "deleteConfirmContent": "Are you sure you want to delete this transaction?",
+  "back": "Back",
+  "income": "Income",
+  "expense": "Expense"
 }

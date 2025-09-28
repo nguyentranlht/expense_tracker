@@ -36,5 +36,10 @@
   "statistics": "Thống kê",
   "monthlyTotalExpenses": "Tổng thu chi tháng: ",
   "selectMonth": "Chọn tháng",
-  "incomeExpense": "Thu - chi"
+  "incomeExpense": "Thu - chi",
+  "deleteConfirmTitle": "Xác nhận xóa",
+  "deleteConfirmContent": "Bạn có chắc chắn muốn xóa giao dịch này?",
+  "back": "Quay lại",
+  "income": "Tiền thu",
+  "expense": "Tiền chi"
 }

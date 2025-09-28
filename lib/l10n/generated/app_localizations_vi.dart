@@ -115,4 +115,19 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get incomeExpense => 'Thu - chi';
+
+  @override
+  String get deleteConfirmTitle => 'Xác nhận xóa';
+
+  @override
+  String get deleteConfirmContent => 'Bạn có chắc chắn muốn xóa giao dịch này?';
+
+  @override
+  String get back => 'Quay lại';
+
+  @override
+  String get income => 'Tiền thu';
+
+  @override
+  String get expense => 'Tiền chi';
 }
