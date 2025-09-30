@@ -131,4 +131,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get expense => 'Expense';
+
+  @override
+  String get addNew => 'Add new';
 }

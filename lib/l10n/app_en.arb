@@ -98,5 +98,6 @@
   "deleteConfirmContent": "Are you sure you want to delete this transaction?",
   "back": "Back",
   "income": "Income",
-  "expense": "Expense"
+  "expense": "Expense",
+  "addNew": "Add new"
 }

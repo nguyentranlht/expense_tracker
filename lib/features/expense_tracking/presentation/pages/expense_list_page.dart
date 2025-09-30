@@ -155,7 +155,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
               slivers: [
                 // SliverAppBar với behavior ẩn/hiện
                 SliverAppBar(
-                  expandedHeight: 300.h,
+                  expandedHeight: 280.h,
                   pinned: true,
                   elevation: 0,
                   forceElevated: false,
@@ -163,7 +163,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                   flexibleSpace: LayoutBuilder(
                     builder: (BuildContext context, BoxConstraints constraints) {
                       // Tính toán tỷ lệ collapse (0.0 = collapsed, 1.0 = expanded)
-                      final expandedHeight = 300.0;
+                      final expandedHeight = 280.h;
                       final currentHeight = constraints.maxHeight;
                       final minHeight =
                           kToolbarHeight + MediaQuery.of(context).padding.top;
@@ -309,8 +309,8 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                       width: _isFabExpanded ? null : 0,
-                      child: const Text(
-                        'Thêm mới',
+                      child: Text(
+                        context.l10n.addNew,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,

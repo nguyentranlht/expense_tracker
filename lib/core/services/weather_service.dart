@@ -112,25 +112,4 @@ class WeatherService {
     return WeatherCondition.partlyCloudy; // Default fallback
   }
   
-  // Get weather description in Vietnamese
-  static String getVietnameseDescription(WeatherCondition condition, String originalDescription) {
-    switch (condition) {
-      case WeatherCondition.sunny:
-        return 'Trời nắng';
-      case WeatherCondition.partlyCloudy:
-        return 'Có mây';
-      case WeatherCondition.cloudy:
-        return 'Nhiều mây';
-      case WeatherCondition.rainy:
-        return 'Mưa';
-      case WeatherCondition.stormy:
-        return 'Dông bão';
-      case WeatherCondition.snowy:
-        return 'Tuyết';
-      case WeatherCondition.foggy:
-        return 'Sương mù';
-      default:
-        return originalDescription;
-    }
-  }
 }

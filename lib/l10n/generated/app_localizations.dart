@@ -343,6 +343,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Expense'**
   String get expense;
+
+  /// No description provided for @addNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Add new'**
+  String get addNew;
 }
 
 class _AppLocalizationsDelegate

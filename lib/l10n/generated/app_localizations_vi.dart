@@ -130,4 +130,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get expense => 'Tiền chi';
+
+  @override
+  String get addNew => 'Thêm mới';
 }

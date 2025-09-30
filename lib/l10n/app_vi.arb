@@ -41,5 +41,6 @@
   "deleteConfirmContent": "Bạn có chắc chắn muốn xóa giao dịch này?",
   "back": "Quay lại",
   "income": "Tiền thu",
-  "expense": "Tiền chi"
+  "expense": "Tiền chi",
+  "addNew": "Thêm mới"
 }
