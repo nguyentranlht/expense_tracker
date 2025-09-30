@@ -3,6 +3,7 @@ import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:expense_tracker/features/expense_tracking/presentation/widgets/expense_flexible_bar.dart';
 import 'package:expense_tracker/widgets/app_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../bloc/expense_bloc.dart';
@@ -22,12 +23,51 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   FilterType _currentFilter = FilterType.all;
   DateTime? _selectedMonth;
   bool _showAllMonths = true;
+  bool _isFabExpanded = true;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     // Load expenses when page is initialized
     context.read<ExpenseBloc>().add(LoadExpenses());
+    
+    // Listen to scroll changes
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels > 50) {
+      if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+        // Scrolling down - collapse FAB
+        if (_isFabExpanded) {
+          setState(() {
+            _isFabExpanded = false;
+          });
+        }
+      } else if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
+        // Scrolling up - expand FAB
+        if (!_isFabExpanded) {
+          setState(() {
+            _isFabExpanded = true;
+          });
+        }
+      }
+    } else {
+      // Near the top - always expanded
+      if (!_isFabExpanded) {
+        setState(() {
+          _isFabExpanded = true;
+        });
+      }
+    }
   }
 
   List<dynamic> _filterExpensesByMonth(List<dynamic> expenses) {
@@ -111,6 +151,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
             }).toList();
 
             return CustomScrollView(
+              controller: _scrollController,
               slivers: [
                 // SliverAppBar với behavior ẩn/hiện
                 SliverAppBar(
@@ -200,14 +241,92 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
           return const Center(child: Text('Something went wrong'));
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const AddEditExpensePage()),
-          );
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        margin: EdgeInsets.only(
+          bottom: _isFabExpanded ? MediaQuery.of(context).padding.bottom : 8.r,
+          right: 8.r
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(_isFabExpanded ? 20 : 16),
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF4285f4), // Gmail blue
+              Color(0xFF1a73e8), // Darker Gmail blue
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF4285f4).withOpacity(0.3),
+              blurRadius: _isFabExpanded ? 15 : 10,
+              offset: Offset(0, _isFabExpanded ? 6 : 4),
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: _isFabExpanded ? 8 : 6,
+              offset: Offset(0, _isFabExpanded ? 2 : 1),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(_isFabExpanded ? 20 : 16),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(_isFabExpanded ? 20 : 16),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AddEditExpensePage()),
+              );
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              constraints: BoxConstraints(
+                minHeight: 48.r,
+                maxHeight: 48.r,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: _isFabExpanded ? 20 : 16,
+                vertical: 12, // Fixed vertical padding
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(Icons.add, color: Colors.white, size: 24),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    width: _isFabExpanded ? 10 : 0,
+                  ),
+                  AnimatedOpacity(
+                    opacity: _isFabExpanded ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 200),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      width: _isFabExpanded ? null : 0,
+                      child: const Text(
+                        'Thêm mới',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.25,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
