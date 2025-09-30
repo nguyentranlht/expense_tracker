@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../constants/constants.dart';
 
@@ -137,12 +138,13 @@ class CategoryHelper {
   static Widget buildCategoryIconContainer(
     String category, {
     double size = 20,
-    double padding = 8,
     double borderRadius = 8,
     String type = 'expense',
   }) {
     return Container(
-      padding: EdgeInsets.all(padding),
+      alignment: Alignment.center,
+      width: size + 16.r,
+      height: size + 16.r,
       decoration: BoxDecoration(
         color: getCategoryColorWithOpacity(category, 0.1, type: type),
         borderRadius: BorderRadius.circular(borderRadius),

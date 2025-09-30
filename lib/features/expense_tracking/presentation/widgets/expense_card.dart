@@ -1,5 +1,6 @@
 import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../core/utils/category_helper.dart';
 import '../../../../core/utils/formatters.dart';
@@ -10,6 +11,7 @@ class ExpenseCard extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onDelete;
   final VoidCallback? onEdit;
+  final bool onDetail;
 
   const ExpenseCard({
     super.key,
@@ -17,6 +19,7 @@ class ExpenseCard extends StatelessWidget {
     this.onTap,
     this.onDelete,
     this.onEdit,
+    this.onDetail = false,
   });
 
   @override
@@ -41,8 +44,7 @@ class ExpenseCard extends StatelessWidget {
                     // Category Icon
                     CategoryHelper.buildCategoryIconContainer(
                       expense.category,
-                      size: 20,
-                      padding: 12,
+                      size: 24.sp,
                       borderRadius: 12,
                     ),
 
@@ -54,16 +56,20 @@ class ExpenseCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 2),
-                          CategoryHelper.buildCategoryChip(
+                          Text(
                             expense.category,
-                            fontSize: 12,
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             expense.title,
                             style: TextStyle(
                               color: Colors.grey[600],
-                              fontSize: 12,
+                              fontSize: 14.sp,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -79,7 +85,7 @@ class ExpenseCard extends StatelessWidget {
                         Text(
                           '${expense.isIncome ? '+' : '-'}${CurrencyFormatter.format(expense.amount)}',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                             color: expense.isIncome ? Colors.green : Colors.red,
                           ),
@@ -90,7 +96,7 @@ class ExpenseCard extends StatelessWidget {
                             context.l10n.localeName,
                           ),
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 14.sp,
                             color: Colors.grey[600],
                           ),
                         ),
@@ -100,7 +106,7 @@ class ExpenseCard extends StatelessWidget {
                 ),
 
                 // Description
-                if (expense.description.isNotEmpty) ...[
+                if (expense.description.isNotEmpty && onDetail) ...[
                   const SizedBox(height: 12),
                   Text(
                     expense.description,
@@ -119,26 +125,27 @@ class ExpenseCard extends StatelessWidget {
                 Row(
                   children: [
                     // Time
-                    Row(
-                      children: [
-                        FaIcon(
-                          FontAwesomeIcons.clock,
-                          size: 12,
-                          color: Colors.grey[500],
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          DateFormatter.formatTime(
-                            expense.createdAt,
-                            context.l10n.localeName,
+                    if(onDetail)
+                      Row(
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.clock,
+                            size: 12,
+                            color: Colors.grey[500],
                           ),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
+                          const SizedBox(width: 4),
+                          Text(
+                            DateFormatter.formatTime(
+                              expense.createdAt,
+                              context.l10n.localeName,
+                            ),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
                     const Spacer(),
 
@@ -190,6 +197,4 @@ class ExpenseCard extends StatelessWidget {
       ),
     );
   }
-
-
 }

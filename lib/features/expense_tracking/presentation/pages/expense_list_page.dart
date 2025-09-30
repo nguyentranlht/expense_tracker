@@ -31,7 +31,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
     super.initState();
     // Load expenses when page is initialized
     context.read<ExpenseBloc>().add(LoadExpenses());
-    
+
     // Listen to scroll changes
     _scrollController.addListener(_onScroll);
   }
@@ -45,14 +45,16 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
 
   void _onScroll() {
     if (_scrollController.position.pixels > 50) {
-      if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+      if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
         // Scrolling down - collapse FAB
         if (_isFabExpanded) {
           setState(() {
             _isFabExpanded = false;
           });
         }
-      } else if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
+      } else if (_scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
         // Scrolling up - expand FAB
         if (!_isFabExpanded) {
           setState(() {
@@ -80,8 +82,6 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
           expenseDate.month == _selectedMonth!.month;
     }).toList();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -201,38 +201,37 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                   ),
                 ),
                 SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final expense = filteredExpenses[index];
-                      return ExpenseCard(
-                        expense: expense,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  AddEditExpensePage(expense: expense),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final expense = filteredExpenses[index];
+                    return ExpenseCard(
+                      expense: expense,
+                      onDetail: true,
+                      onEdit: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AddEditExpensePage(
+                              expense: expense,
                             ),
-                          );
-                        },
-                        onDelete: () {
-                          AppDialog.confirm(
-                            context: context,
-                            title: context.l10n.deleteConfirmTitle,
-                            content: context.l10n.deleteConfirmContent,
-                            cancelText: context.l10n.back,
-                            confirmText: context.l10n.delete,
-                            confirmColor: Colors.red,
-                            onConfirm: () {
-                              context.read<ExpenseBloc>().add(
-                                DeleteExpenseEvent(expense.id!),
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                    childCount: filteredExpenses.length,
-                  ),
+                          ),
+                        );
+                      },
+                      onDelete: () {
+                        AppDialog.confirm(
+                          context: context,
+                          title: context.l10n.deleteConfirmTitle,
+                          content: context.l10n.deleteConfirmContent,
+                          cancelText: context.l10n.back,
+                          confirmText: context.l10n.delete,
+                          confirmColor: Colors.red,
+                          onConfirm: () {
+                            context.read<ExpenseBloc>().add(
+                              DeleteExpenseEvent(expense.id!),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  }, childCount: filteredExpenses.length),
                 ),
               ],
             );
@@ -246,7 +245,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
         curve: Curves.easeInOut,
         margin: EdgeInsets.only(
           bottom: _isFabExpanded ? MediaQuery.of(context).padding.bottom : 8.r,
-          right: 8.r
+          right: 8.r,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(_isFabExpanded ? 20 : 16),
@@ -278,16 +277,15 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
             borderRadius: BorderRadius.circular(_isFabExpanded ? 20 : 16),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const AddEditExpensePage()),
+                MaterialPageRoute(
+                  builder: (context) => const AddEditExpensePage(),
+                ),
               );
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
-              constraints: BoxConstraints(
-                minHeight: 48.r,
-                maxHeight: 48.r,
-              ),
+              constraints: BoxConstraints(minHeight: 48.r, maxHeight: 48.r),
               padding: EdgeInsets.symmetric(
                 horizontal: _isFabExpanded ? 20 : 16,
                 vertical: 12, // Fixed vertical padding

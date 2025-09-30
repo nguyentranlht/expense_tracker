@@ -77,7 +77,6 @@ class RecentExpensesCard extends StatelessWidget {
                     leading: CategoryHelper.buildCategoryIconContainer(
                       expense.category,
                       size: 22.sp,
-                      padding: 8,
                       borderRadius: 8,
                     ),
                     title: Text(
