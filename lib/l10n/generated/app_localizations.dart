@@ -179,7 +179,7 @@ abstract class AppLocalizations {
   /// Message when no expenses are found
   ///
   /// In en, this message translates to:
-  /// **'No expenses found'**
+  /// **'No transactions'**
   String get noExpenses;
 
   /// Currency symbol
@@ -349,6 +349,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add new'**
   String get addNew;
+
+  /// No description provided for @addTransactionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to add income or expense'**
+  String get addTransactionHint;
 }
 
 class _AppLocalizationsDelegate

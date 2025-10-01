@@ -52,15 +52,19 @@ class RecentExpensesCard extends StatelessWidget {
             
             if (expenses.isEmpty)
               Center(
-                child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Text(
-                    context.l10n.noExpenses,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16.sp,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.receipt_long, size: 50.sp, color: Colors.grey),
+                    SizedBox(height: 16.sp),
+                    Text(
+                      context.l10n.noExpenses,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16.sp,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               )
             else

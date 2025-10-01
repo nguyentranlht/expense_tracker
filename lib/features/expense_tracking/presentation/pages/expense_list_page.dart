@@ -101,27 +101,6 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
           if (state is ExpenseLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ExpenseLoaded) {
-            if (state.expenses.isEmpty) {
-              return const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.receipt_long, size: 64, color: Colors.grey),
-                    SizedBox(height: 16),
-                    Text(
-                      'Chưa có giao dịch nào',
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Nhấn nút + để thêm thu nhập hoặc chi tiêu',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                  ],
-                ),
-              );
-            }
-
             // Filter expenses by month first
             final monthFilteredExpenses = _filterExpensesByMonth(
               state.expenses,
@@ -200,6 +179,42 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                     },
                   ),
                 ),
+                if (state.expenses.isEmpty)
+                  SliverFillRemaining(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(32.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.receipt_long,
+                              size: 80.sp,
+                              color: Colors.grey[400],
+                            ),
+                            SizedBox(height: 24.h),
+                            Text(
+                              context.l10n.noExpenses,
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                            SizedBox(height: 12.h),
+                            Text(
+                              context.l10n.addTransactionHint,
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.grey[600],
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     final expense = filteredExpenses[index];
@@ -209,9 +224,8 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                       onEdit: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => AddEditExpensePage(
-                              expense: expense,
-                            ),
+                            builder: (context) =>
+                                AddEditExpensePage(expense: expense),
                           ),
                         );
                       },

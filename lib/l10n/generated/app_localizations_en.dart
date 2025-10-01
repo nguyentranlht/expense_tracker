@@ -48,7 +48,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalExpenses => 'Total Expenses';
 
   @override
-  String get noExpenses => 'No expenses found';
+  String get noExpenses => 'No transactions';
 
   @override
   String get currencySymbol => '\$';
@@ -134,4 +134,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addNew => 'Add new';
+
+  @override
+  String get addTransactionHint => 'Tap + to add income or expense';
 }

@@ -52,7 +52,7 @@
   "@totalExpenses": {
     "description": "Total expenses label"
   },
-  "noExpenses": "No expenses found",
+  "noExpenses": "No transactions",
   "@noExpenses": {
     "description": "Message when no expenses are found"
   },
@@ -99,5 +99,6 @@
   "back": "Back",
   "income": "Income",
   "expense": "Expense",
-  "addNew": "Add new"
+  "addNew": "Add new",
+  "addTransactionHint": "Tap + to add income or expense"
 }

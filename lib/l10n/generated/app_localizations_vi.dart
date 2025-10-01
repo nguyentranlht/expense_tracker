@@ -48,7 +48,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get totalExpenses => 'Tổng Chi Tiêu';
 
   @override
-  String get noExpenses => 'Không có chi tiêu nào';
+  String get noExpenses => 'Chưa có giao dịch nào';
 
   @override
   String get currencySymbol => '₫';
@@ -133,4 +133,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get addNew => 'Thêm mới';
+
+  @override
+  String get addTransactionHint => 'Nhấn nút + để thêm thu nhập hoặc chi tiêu';
 }
