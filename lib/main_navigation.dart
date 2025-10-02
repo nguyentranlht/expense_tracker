@@ -108,8 +108,8 @@ class _MainNavigationPageState extends State<MainNavigationPage>
                 label: context.l10n.home,
               ),
               NavigationDestination(
-                selectedIcon: const Icon(FontAwesomeIcons.solidCreditCard),
-                icon: const Icon(FontAwesomeIcons.creditCard),
+                selectedIcon: const Icon(FontAwesomeIcons.wallet),
+                icon: const Icon(FontAwesomeIcons.wallet),
                 label: context.l10n.expenses,
               ),
               NavigationDestination(
