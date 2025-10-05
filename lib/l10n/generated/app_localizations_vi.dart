@@ -139,4 +139,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get statisticsTitle => 'Thống kê Thu Chi';
+
+  @override
+  String get fromDate => 'Từ ngày';
+
+  @override
+  String get toDate => 'Đến ngày';
 }

@@ -44,5 +44,7 @@
   "expense": "Tiền chi",
   "addNew": "Thêm mới",
   "addTransactionHint": "Nhấn nút + để thêm thu nhập hoặc chi tiêu",
-  "statisticsTitle": "Thống kê Thu Chi"
+  "statisticsTitle": "Thống kê Thu Chi",
+  "fromDate": "Từ ngày",
+  "toDate": "Đến ngày"
 }

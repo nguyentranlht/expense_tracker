@@ -4,6 +4,7 @@ import 'package:expense_tracker/core/utils/localization_helper.dart';
 import 'package:expense_tracker/features/expense_tracking/presentation/widgets/modal_bottom_month.dart';
 import 'package:expense_tracker/features/expense_tracking/presentation/widgets/summary_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum FilterType {
   all,
@@ -107,17 +108,17 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.trending_up_rounded,
                       color: Colors.white,
-                      size: 12,
+                      size: 12.sp,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       CurrencyFormatter.formatCompact(widget.totalExpense),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -132,7 +133,7 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
                 context.l10n.incomeExpense,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -149,17 +150,17 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.trending_down_rounded,
                       color: Colors.white,
-                      size: 12,
+                      size: 12.sp,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       CurrencyFormatter.formatCompact(widget.totalIncome),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -202,10 +203,10 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
                             color: Colors.white.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.account_balance_wallet_rounded,
                             color: Colors.white,
-                            size: 24,
+                            size: 24.sp,
                           ),
                         ),
                         Expanded(
@@ -214,7 +215,7 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 22,
+                              fontSize: 22.sp,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 0.5,
                             ),
@@ -226,10 +227,10 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
                             color: Colors.white.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.notifications_rounded,
                             color: Colors.white,
-                            size: 24,
+                            size: 24.sp,
                           ),
                         ),
                       ],
@@ -275,17 +276,17 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.calendar_today_rounded,
                                   color: Colors.white,
-                                  size: 18,
+                                  size: 18.sp,
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
                                   _getDisplayText(),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 15,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: 0.3,
                                   ),
@@ -294,10 +295,10 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
                                 AnimatedRotation(
                                   turns: _isMonthPickerVisible ? 0.5 : 0.0,
                                   duration: const Duration(milliseconds: 200),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.expand_more_rounded,
                                     color: Colors.white,
-                                    size: 20,
+                                    size: 20.sp,
                                   ),
                                 ),
                               ],

@@ -140,4 +140,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statisticsTitle => 'Income & Expense Statistics';
+
+  @override
+  String get fromDate => 'From date';
+
+  @override
+  String get toDate => 'To date';
 }

@@ -10,9 +10,9 @@ class StatisticsFlexibleBar extends StatefulWidget {
   final DateTime endDate;
   final VoidCallback? onLoadStatistics;
   final Function(DateTime, DateTime)? onDateRangeChanged;
-  
+
   const StatisticsFlexibleBar({
-    super.key, 
+    super.key,
     required this.isCollapsed,
     required this.startDate,
     required this.endDate,
@@ -27,18 +27,19 @@ class StatisticsFlexibleBar extends StatefulWidget {
 class _StatisticsFlexibleBarState extends State<StatisticsFlexibleBar> {
   late DateTime _startDate;
   late DateTime _endDate;
-  
+
   @override
   void initState() {
     super.initState();
     _startDate = widget.startDate;
     _endDate = widget.endDate;
   }
-  
+
   void _loadStatistics() {
     // Also call the onLoadStatistics callback if provided
     widget.onLoadStatistics?.call();
   }
+
   @override
   Widget build(BuildContext context) {
     return FlexibleSpaceBar(
@@ -131,96 +132,26 @@ class _StatisticsFlexibleBarState extends State<StatisticsFlexibleBar> {
                     Row(
                       children: [
                         Expanded(
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () => _selectDate(true),
-                              borderRadius: BorderRadius.circular(12.r),
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 10.h,
-                                  horizontal: 10.w,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue[50],
-                                  border: Border.all(color: Colors.blue[200]!),
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Từ ngày',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: Colors.blue[600],
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    SizedBox(height: 4.h),
-                                    Text(
-                                      DateFormatter.formatDate(
-                                        _startDate,
-                                        context.l10n.localeName,
-                                      ),
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.grey[800],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          child: _buildDateSelector(
+                            context: context,
+                            label: context.l10n.fromDate,
+                            date: _startDate,
+                            onTap: () => _selectDate(true),
+                            backgroundColor: Colors.blue[50]!,
+                            borderColor: Colors.blue[200]!,
+                            labelColor: Colors.blue[600]!,
                           ),
                         ),
                         SizedBox(width: 16.w),
                         Expanded(
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () => _selectDate(false),
-                              borderRadius: BorderRadius.circular(12.r),
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 10.h,
-                                  horizontal: 10.w,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.orange[50],
-                                  border: Border.all(
-                                    color: Colors.orange[200]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Đến ngày',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: Colors.orange[600],
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    SizedBox(height: 4.h),
-                                    Text(
-                                      DateFormatter.formatDate(
-                                        _endDate,
-                                        context.l10n.localeName,
-                                      ),
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.grey[800],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          child: _buildDateSelector(
+                            context: context,
+                            label: context.l10n.toDate,
+                            date: _endDate,
+                            onTap: () => _selectDate(false),
+                            backgroundColor: Colors.orange[50]!,
+                            borderColor: Colors.orange[200]!,
+                            labelColor: Colors.orange[600]!,
                           ),
                         ),
                       ],
@@ -281,6 +212,57 @@ class _StatisticsFlexibleBarState extends State<StatisticsFlexibleBar> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDateSelector({
+    required BuildContext context,
+    required String label,
+    required DateTime date,
+    required VoidCallback onTap,
+    required Color backgroundColor,
+    required Color borderColor,
+    required Color labelColor,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12.r),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            border: Border.all(color: borderColor),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: labelColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: 4.h),
+              Text(
+                DateFormatter.formatDate(
+                  date,
+                  Localizations.localeOf(context).languageCode,
+                ),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
