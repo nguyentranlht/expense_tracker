@@ -89,7 +89,7 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
         opacity: widget.isCollapsed ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 200),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.15),
             borderRadius: BorderRadius.circular(25),
@@ -100,7 +100,7 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
             children: [
               // Mini card Chi
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 decoration: BoxDecoration(
                   color: const Color(0xFF2E5C8A).withOpacity(0.8),
                   borderRadius: BorderRadius.circular(12),
@@ -142,7 +142,7 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
 
               // Mini card Thu
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 decoration: BoxDecoration(
                   color: const Color(0xFF5A9BD4).withOpacity(0.8),
                   borderRadius: BorderRadius.circular(12),
@@ -189,9 +189,9 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
             children: [
               // Header với title và decoration
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 12.h,
                 ),
                 child: Column(
                   children: [
@@ -313,9 +313,9 @@ class _ExpenseFlexibleBarState extends State<ExpenseFlexibleBar> {
 
               // Cards with smooth transition effect
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 20,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 20.h,
                 ),
                 child: AnimatedOpacity(
                   opacity: widget.collapseRatio > 0.3 ? widget.collapseRatio : 0.0,
