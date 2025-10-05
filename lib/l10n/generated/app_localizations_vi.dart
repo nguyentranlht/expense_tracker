@@ -136,4 +136,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get addTransactionHint => 'Nhấn nút + để thêm thu nhập hoặc chi tiêu';
+
+  @override
+  String get statisticsTitle => 'Thống kê Thu Chi';
 }

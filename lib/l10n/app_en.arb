@@ -100,5 +100,6 @@
   "income": "Income",
   "expense": "Expense",
   "addNew": "Add new",
-  "addTransactionHint": "Tap + to add income or expense"
+  "addTransactionHint": "Tap + to add income or expense",
+  "statisticsTitle": "Income & Expense Statistics"
 }

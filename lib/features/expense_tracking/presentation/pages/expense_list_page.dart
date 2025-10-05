@@ -180,7 +180,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                   ),
                 ),
                 if (state.expenses.isEmpty)
-                  SliverFillRemaining(
+                  SliverToBoxAdapter(
                     child: Center(
                       child: Padding(
                         padding: EdgeInsets.all(32.w),

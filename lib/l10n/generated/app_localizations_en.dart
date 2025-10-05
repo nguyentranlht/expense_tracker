@@ -137,4 +137,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addTransactionHint => 'Tap + to add income or expense';
+
+  @override
+  String get statisticsTitle => 'Income & Expense Statistics';
 }

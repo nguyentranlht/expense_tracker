@@ -43,5 +43,6 @@
   "income": "Tiền thu",
   "expense": "Tiền chi",
   "addNew": "Thêm mới",
-  "addTransactionHint": "Nhấn nút + để thêm thu nhập hoặc chi tiêu"
+  "addTransactionHint": "Nhấn nút + để thêm thu nhập hoặc chi tiêu",
+  "statisticsTitle": "Thống kê Thu Chi"
 }

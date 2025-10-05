@@ -355,6 +355,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap + to add income or expense'**
   String get addTransactionHint;
+
+  /// No description provided for @statisticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Income & Expense Statistics'**
+  String get statisticsTitle;
 }
 
 class _AppLocalizationsDelegate
