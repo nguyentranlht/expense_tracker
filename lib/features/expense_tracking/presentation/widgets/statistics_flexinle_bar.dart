@@ -61,7 +61,7 @@ class _StatisticsFlexibleBarState extends State<StatisticsFlexibleBar> {
               Text(
                 context.l10n.statisticsTitle,
                 style: TextStyle(
-                  fontSize: 20.sp,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
